@@ -35,6 +35,7 @@ export const renderHtmlStart = (head, assets) =>
 
 export const renderHtmlEnd = (assets, initialState) => `
   </div>
+    <div id="modal"></div>
     <!-- Store the initial state into window -->
     <script>
       // Use serialize-javascript for mitigating XSS attacks. See the following security issues:

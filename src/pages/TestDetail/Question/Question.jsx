@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import Answer from './Answer';
 import deleteIcon from 'images/delete.png';
 import { deleteQuestion } from 'models/questions/slice';
+import Modal from 'components/Modal';
 
 const Question = props => {
   const { question, testId } = props;
   const questions = useSelector(state => state.questions.questions);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = React.useState(false);
 
   const _renderAnswers = React.useMemo(() => {
     return questions[question].answers.map(answer => (
@@ -22,9 +24,12 @@ const Question = props => {
   }, [questions, question]);
 
   const handleQuestionDelete = React.useCallback(() => {
-    console.log(question);
     dispatch(deleteQuestion({ questionId: question, testId }));
   }, [dispatch, question, testId]);
+
+  const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
+    showModal,
+  ]);
 
   return (
     <div>
@@ -34,7 +39,7 @@ const Question = props => {
           <span className={style.type}>
             {questions[question].question_type}
           </span>
-          <button onClick={handleQuestionDelete} className={style.delete}>
+          <button onClick={handleToggleModal} className={style.delete}>
             <img className={style.delete_img} src={deleteIcon} alt="delete" />
           </button>
         </div>
@@ -48,6 +53,17 @@ const Question = props => {
           )}
         </div>
       </div>
+      {showModal && (
+        <Modal close={handleToggleModal}>
+          <div>Are you sure ?</div>
+          <button className={style.delete_modal} onClick={handleQuestionDelete}>
+            Delete
+          </button>
+          <button className={style.cancel_modal} onClick={handleToggleModal}>
+            Cancel
+          </button>
+        </Modal>
+      )}
     </div>
   );
 };

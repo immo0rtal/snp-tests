@@ -43,3 +43,17 @@
   right: 15px;
   top: 15px;
 }
+
+.delete_modal {
+  padding: 5px;
+  background: $color-light;
+  color: $color-green;
+  font-size: 15px;
+}
+
+.cancel_modal {
+  padding: 5px;
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 15px;
+}
