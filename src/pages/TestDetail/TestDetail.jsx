@@ -29,7 +29,7 @@ const TestDetail = props => {
   const _renderQuestions = React.useMemo(() => {
     if (Object.values(tests).length > 0 && id) {
       return tests[id].questions.map(question => (
-        <Question key={question} question={question} />
+        <Question key={question} question={question} testId={id} />
       ));
     }
     return '';

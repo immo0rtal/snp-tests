@@ -1,6 +1,14 @@
 /* eslint-disable no-param-reassign */
 
-import { createSlice } from 'redux-starter-kit';
+import { createSlice, createAction } from 'redux-starter-kit';
+
+const actionCreateQuestionSuccess = createAction(
+  'questions/createQuestionSuccess'
+);
+
+const actionDeleteQuestionSuccess = createAction(
+  'questions/deleteQuestionSuccess'
+);
 
 const testsSlice = createSlice({
   name: 'tests',
@@ -49,12 +57,25 @@ const testsSlice = createSlice({
     delelteTest(state) {
       state.loading = true;
     },
-    deleteTestSuccess(state, { payload }) {
+    deleteTestSuccess(state) {
       state.loading = false;
     },
     deleteTestFailed(state, { payload }) {
       state.loading = false;
       state.errorMessage = payload.errorMessage;
+    },
+  },
+  extraReducers: {
+    [actionCreateQuestionSuccess]: (state, { payload: { id, question } }) => {
+      state.tests[id].questions.push(question.id);
+    },
+    [actionDeleteQuestionSuccess]: (
+      state,
+      { payload: { testId, questionId } }
+    ) => {
+      state.tests[testId].questions = state.tests[testId].questions.filter(
+        question => question !== questionId
+      );
     },
   },
 });
@@ -68,7 +89,5 @@ export const {
   createTestSuccess,
   createTestFailed,
 } = testsSlice.actions;
-
-export const tests = testsSlice;
 
 export default testsSlice.reducer;

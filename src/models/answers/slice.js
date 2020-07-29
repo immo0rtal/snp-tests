@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 
-import { createSlice } from 'redux-starter-kit';
-import { tests } from 'models/tests/slice';
+import { createSlice, createAction } from 'redux-starter-kit';
+
+const actionGetTestsSuccess = createAction('tests/getTestsSuccess');
 
 const answersSlice = createSlice({
   name: 'answers',
@@ -12,7 +13,7 @@ const answersSlice = createSlice({
   },
   reducers: {},
   extraReducers: {
-    [tests.actions.getTestsSuccess]: (state, { payload }) => {
+    [actionGetTestsSuccess]: (state, { payload }) => {
       state.answers = payload.answers;
     },
   },

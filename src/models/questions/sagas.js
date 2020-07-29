@@ -1,22 +1,38 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { postQuestion } from 'api/tests';
+import { postQuestion, removeQuestion } from 'api/tests';
 
 import {
   createQuestion,
   createQuestionSuccess,
   createQuestionFailed,
+  deleteQuestion,
+  deleteQuestionSuccess,
+  deleteQuestionFailed,
 } from './slice';
 
 export function* createQuestionEffect(action) {
   const { data, id } = action.payload;
   try {
     const response = yield call(postQuestion, data, id);
-    yield put(createQuestionSuccess({ question: response.data }));
+    yield put(createQuestionSuccess({ question: response.data, id }));
   } catch (err) {
     yield put(createQuestionFailed({ err }));
   }
 }
 
+export function* deleteQuestionEffect(action) {
+  const { questionId, testId } = action.payload;
+  try {
+    yield call(removeQuestion, questionId);
+    yield put(deleteQuestionSuccess({ questionId, testId }));
+  } catch (err) {
+    yield put(deleteQuestionFailed({ err }));
+  }
+}
+
 export default function*() {
-  yield all([takeEvery(createQuestion, createQuestionEffect)]);
+  yield all([
+    takeEvery(createQuestion, createQuestionEffect),
+    takeEvery(deleteQuestion, deleteQuestionEffect),
+  ]);
 }

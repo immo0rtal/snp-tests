@@ -29,3 +29,9 @@ export const postQuestion = (data, id) =>
     url: `/tests/${id}/questions`,
     data,
   });
+
+export const removeQuestion = id =>
+  Req.DELETE({
+    url: `/questions/${id}`,
+    id,
+  });

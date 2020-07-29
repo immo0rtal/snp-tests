@@ -1,3 +1,5 @@
+@use '~styles/variables' as *;
+
 .question {
   background: white;
   border-radius: 15px;
@@ -5,6 +7,7 @@
   padding: 30px;
   width: 700px;
   margin-top: 30px;
+  position: relative;
 }
 
 .answers {
@@ -13,4 +16,30 @@
 
 .title {
   font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.warning {
+  color: $color-darkgray;
+}
+
+.type {
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 15px;
+  padding: 5px;
+  border-radius: 15px;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.delete_img {
+  max-width: 30px;
+}
+
+.delete {
+  position: absolute;
+  right: 15px;
+  top: 15px;
 }
