@@ -1,0 +1,61 @@
+@use '~styles/variables' as *;
+
+.content {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+}
+
+.users {
+  width: 500px;
+  height: 100%;
+}
+
+.users_title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 23px;
+  margin-bottom: 40px;
+  color: $color-lighttext;
+}
+
+.users_wrapper {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signin {
+  font-family: 'Roboto', sans-serif;
+  font-size: 23px;
+  margin-bottom: 40px;
+  color: $color-lighttext;
+}
+
+.signin_wrapper {
+  width: 500px;
+}
+
+.signup_wrapper {
+  margin-top: 40px;
+  width: 500px;
+}
+
+.text {
+  font-family: 'Roboto', sans-serif;
+  color: $color-text;
+}
+
+.footer {
+  width: 500px;
+  border-top: 1px solid $color-darkgray;
+  padding-top: 10px;
+  margin: 45px auto 0;
+  text-align: center;
+  color: $color-darkgray;
+}

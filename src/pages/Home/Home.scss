@@ -1,0 +1,86 @@
+@use '~styles/variables' as *;
+
+.loader {
+  margin: 5% auto;
+  max-width: 200px;
+}
+
+.header {
+  height: 60px;
+  background: white;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.title {
+  font-size: 25px;
+  color: $color-dark;
+  margin-left: 50px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.logout {
+  padding: 10px;
+  border-radius: 9px;
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 450;
+  margin-right: 60px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.username {
+  background: $color-lightgray;
+  font-size: 18px;
+  color: $color-blue;
+  margin-left: 50px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.user {
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 18px;
+  margin-left: 15px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.create {
+  background: $color-light;
+  color: $color-green;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  margin-right: 20px;
+}
+
+.search {
+  background: rgb(240, 240, 240);
+  border-radius: 3px;
+  padding: 10px;
+  width: 250px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.wrapper {
+  position: absolute;
+  left: 43%;
+}

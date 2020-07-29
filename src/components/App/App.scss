@@ -1,0 +1,18 @@
+@use '~styles/variables' as *;
+
+@font-face {
+  font-family: Roboto;
+  src: url('fonts/Roboto-Regular.ttf');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Roboto-black;
+  src: url('fonts/Roboto-Black.ttf');
+  font-weight: 600;
+}
+
+body {
+  background-color: $color-gray;
+  font-family: 'Roboto', sans-serif;
+}
