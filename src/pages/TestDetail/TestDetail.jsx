@@ -17,6 +17,8 @@ const TestDetail = props => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { id } = props.match.params;
+  const [createFormOpen, setCreateFormOpen] = React.useState(false);
+  const createButtonRef = React.useRef(null);
 
   React.useEffect(() => {
     if (!login) {
@@ -46,6 +48,15 @@ const TestDetail = props => {
     [dispatch, id]
   );
 
+  const handleOpenCreateQuestion = React.useCallback(
+    () => setCreateFormOpen(!createFormOpen),
+    [createFormOpen]
+  );
+
+  const scrollToBottom = React.useCallback(() => {
+    createButtonRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [createButtonRef]);
+
   return (
     <div>
       <Navbar>
@@ -53,46 +64,56 @@ const TestDetail = props => {
           <img className={style.arrow} src={arrow} alt="back" />
         </button>
       </Navbar>
-      <div className={style.create}>
-        <Formik
-          initialValues={{
-            title: '',
-            question_type: 'single',
-            answer: 0,
-          }}
-          validationSchema={Yup.object().shape({
-            title: Yup.string().required(),
-            answer: Yup.number(),
-          })}
-          onSubmit={handleCreateQuestion}
-        >
-          {({ values, setFieldValue }) => (
-            <Form className={style.form}>
-              <Field
-                className={style.input}
-                name="title"
-                placeholder="question"
-                type="text"
-              />
-              <ErrorMessage name="title" component="div" />
-              <Dropdown
-                questionType={values.question_type}
-                setFieldValue={setFieldValue}
-              />
-              {values.question_type === 'number' && (
+      <button onClick={scrollToBottom}>scroll</button>
+      <div className={style.questions}>{_renderQuestions}</div>
+      {createFormOpen ? (
+        <div className={style.create}>
+          <button onClick={handleOpenCreateQuestion}>close</button>
+          <Formik
+            initialValues={{
+              title: '',
+              question_type: 'single',
+              answer: 0,
+            }}
+            validationSchema={Yup.object().shape({
+              title: Yup.string().required(),
+              answer: Yup.number(),
+            })}
+            onSubmit={handleCreateQuestion}
+          >
+            {({ values, setFieldValue }) => (
+              <Form className={style.form}>
                 <Field
-                  className={style.answer}
-                  name="answer"
-                  placeholder="answer"
+                  className={style.input}
+                  name="title"
+                  placeholder="question"
                   type="text"
                 />
-              )}
-              <button type="submit">Create question</button>
-            </Form>
-          )}
-        </Formik>
-      </div>
-      <div className={style.questions}>{_renderQuestions}</div>
+                <ErrorMessage name="title" component="div" />
+                <Dropdown
+                  questionType={values.question_type}
+                  setFieldValue={setFieldValue}
+                />
+                {values.question_type === 'number' && (
+                  <Field
+                    className={style.answer}
+                    name="answer"
+                    placeholder="answer"
+                    type="text"
+                  />
+                )}
+                <button type="submit">Create question</button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      ) : (
+        <div className={style.add_wrapper} ref={createButtonRef}>
+          <button onClick={handleOpenCreateQuestion} className={style.add}>
+            +
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -8,7 +8,8 @@ import answersReducer from './answers/slice';
 
 import authSagas from './authentication/sagas';
 import testsSagas from './tests/sagas';
-import questionSagas from './questions/sagas';
+import questionsSagas from './questions/sagas';
+import answersSagas from './answers/sagas';
 
 export const createRootReducer = history => ({
   router: connectRouter(history),
@@ -19,5 +20,5 @@ export const createRootReducer = history => ({
 });
 
 export const rootSaga = function* rootSaga() {
-  yield all([authSagas(), testsSagas(), questionSagas()]);
+  yield all([authSagas(), testsSagas(), questionsSagas(), answersSagas()]);
 };

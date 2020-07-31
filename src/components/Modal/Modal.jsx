@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import style from './Modal.scss';
@@ -32,6 +32,7 @@ const Modal = props => {
   return createPortal(
     <div className={style.wrapper}>
       <div className={style.modal} ref={ref}>
+        <div>Are you sure ?</div>
         <button onClick={close}>
           <img className={style.close_button} src={closeIcon} alt="close" />
         </button>

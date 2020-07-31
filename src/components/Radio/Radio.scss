@@ -1,0 +1,24 @@
+.radio {
+  position: relative;
+}
+
+.radio__input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.radio_img {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background-image: url('images/radioFalse.png');
+  background-size: 100% 100%;
+}
+
+.radio__input:checked + .radio_img {
+  width: 1em;
+  height: 1em;
+  background-image: url('images/radioTrue.png');
+  background-size: 100% 100%;
+}

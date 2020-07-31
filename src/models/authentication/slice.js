@@ -28,7 +28,7 @@ const authSlice = createSlice({
     },
     registerUserFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     loginUser(state) {
       state.loading = true;
@@ -40,7 +40,7 @@ const authSlice = createSlice({
     },
     loginUserFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     checkCurrentUser(state) {
       state.initialLoading = true;
@@ -52,7 +52,7 @@ const authSlice = createSlice({
     },
     checkCurrentUserFailed(state, { payload }) {
       state.initialLoading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     logoutUser(state) {
       state.initialLoading = true;
@@ -63,7 +63,7 @@ const authSlice = createSlice({
     },
     logoutUserFailed(state, { payload }) {
       state.initialLoading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
   },
 });

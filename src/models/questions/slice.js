@@ -4,6 +4,8 @@ import { createSlice, createAction } from 'redux-starter-kit';
 
 const actionGetTestsSuccess = createAction('tests/getTestsSuccess');
 
+const actionCreateAnswerSuccess = createAction('answers/createAnswerSuccess');
+
 const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
@@ -24,7 +26,7 @@ const questionsSlice = createSlice({
     },
     createQuestionFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     deleteQuestion(state) {
       state.loading = true;
@@ -34,12 +36,15 @@ const questionsSlice = createSlice({
     },
     deleteQuestionFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
   },
   extraReducers: {
     [actionGetTestsSuccess]: (state, { payload }) => {
       state.questions = payload.questions;
+    },
+    [actionCreateAnswerSuccess]: (state, { payload: { id, answer } }) => {
+      state.questions[id].answers.push(answer.id);
     },
   },
 });

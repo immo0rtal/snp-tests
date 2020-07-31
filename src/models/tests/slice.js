@@ -41,7 +41,7 @@ const testsSlice = createSlice({
     },
     getTestsFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     createTest(state) {
       state.loading = true;
@@ -52,7 +52,7 @@ const testsSlice = createSlice({
     },
     createTestFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
     delelteTest(state) {
       state.loading = true;
@@ -62,7 +62,7 @@ const testsSlice = createSlice({
     },
     deleteTestFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload.err;
     },
   },
   extraReducers: {

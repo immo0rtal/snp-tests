@@ -35,3 +35,9 @@ export const removeQuestion = id =>
     url: `/questions/${id}`,
     id,
   });
+
+export const postAnswer = (data, id) =>
+  Req.POST({
+    url: `/questions/${id}/answers`,
+    data,
+  });

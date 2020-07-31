@@ -7,11 +7,26 @@ const actionGetTestsSuccess = createAction('tests/getTestsSuccess');
 const answersSlice = createSlice({
   name: 'answers',
   initialState: {
-    answers: [],
+    answers: {},
     loading: false,
     errorMessage: null,
   },
-  reducers: {},
+  reducers: {
+    createAnswer(state) {
+      state.loading = true;
+    },
+    createAnswerSuccess(state, { payload }) {
+      state.loading = false;
+      state.answers = {
+        ...state.answers,
+        [payload.answer.id]: payload.answer,
+      };
+    },
+    createAnswerFailed(state, { payload }) {
+      state.loading = false;
+      state.errorMessage = payload.err;
+    },
+  },
   extraReducers: {
     [actionGetTestsSuccess]: (state, { payload }) => {
       state.answers = payload.answers;
@@ -19,6 +34,10 @@ const answersSlice = createSlice({
   },
 });
 
-// export const {} = answersSlice.actions;
+export const {
+  createAnswer,
+  createAnswerSuccess,
+  createAnswerFailed,
+} = answersSlice.actions;
 
 export default answersSlice.reducer;

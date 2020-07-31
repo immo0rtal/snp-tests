@@ -1,0 +1,23 @@
+.check {
+  position: relative;
+}
+
+.check__input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.сheckbox {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background-image: url('images/checkboxFalse.png');
+}
+
+.check__input:checked + .сheckbox {
+  width: 1em;
+  height: 1em;
+  background-image: url('images/checkboxTrue.png');
+  background-size: 100% 100%;
+}
