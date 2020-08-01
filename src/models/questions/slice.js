@@ -6,6 +6,8 @@ const actionGetTestsSuccess = createAction('tests/getTestsSuccess');
 
 const actionCreateAnswerSuccess = createAction('answers/createAnswerSuccess');
 
+const actionDeleteAnswerSuccess = createAction('answers/deleteAnswerSuccess');
+
 const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
@@ -45,6 +47,14 @@ const questionsSlice = createSlice({
     },
     [actionCreateAnswerSuccess]: (state, { payload: { id, answer } }) => {
       state.questions[id].answers.push(answer.id);
+    },
+    [actionDeleteAnswerSuccess]: (
+      state,
+      { payload: { questionId, answerId } }
+    ) => {
+      state.questions[questionId].answers = state.questions[
+        questionId
+      ].answers.filter(answer => answer !== answerId);
     },
   },
 });

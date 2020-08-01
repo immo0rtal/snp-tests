@@ -18,7 +18,7 @@ export default [
     title: 'Auth',
   },
   {
-    path: '/test/edit/:id',
+    path: '/test/:id',
     exact: true,
     cache: false,
     component: TestDetail,

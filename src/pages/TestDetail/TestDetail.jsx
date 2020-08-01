@@ -63,6 +63,8 @@ const TestDetail = props => {
         <button onClick={handleBack}>
           <img className={style.arrow} src={arrow} alt="back" />
         </button>
+        <div>{tests[id] && tests[id].title}</div>
+        <button className={style.logout}>Logout</button>
       </Navbar>
       <button onClick={scrollToBottom}>scroll</button>
       <div className={style.questions}>{_renderQuestions}</div>

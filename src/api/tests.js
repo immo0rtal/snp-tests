@@ -41,3 +41,15 @@ export const postAnswer = (data, id) =>
     url: `/questions/${id}/answers`,
     data,
   });
+
+export const removeAnswer = id =>
+  Req.DELETE({
+    url: `/answers/${id}`,
+    id,
+  });
+
+export const patchAnswer = data =>
+  Req.PATCH({
+    url: `/answers/${data.id}`,
+    data,
+  });

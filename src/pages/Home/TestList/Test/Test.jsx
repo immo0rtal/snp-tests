@@ -15,7 +15,7 @@ const Test = props => {
   const [showModal, setShowModal] = React.useState(false);
 
   const handleEdit = React.useCallback(() => {
-    history.push(`/test/edit/${id}`);
+    history.push(`/test/${id}`);
   }, [history, id]);
 
   const handleDelete = React.useCallback(() => {

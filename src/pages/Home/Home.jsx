@@ -16,7 +16,8 @@ import {
 import loader from 'images/loader.gif';
 import style from './Home.scss';
 import TestList from './TestList';
-import { getTests, changeSearchField } from 'models/tests/slice';
+import { getTests, changeSearchField, createTest } from 'models/tests/slice';
+import Modal from 'components/Modal';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -25,13 +26,17 @@ const Home = () => {
   const data = useSelector(dataSelector);
   const info = useSelector(infoSelector);
   const history = useHistory();
+  const [openModal, setOpenModal] = React.useState(false);
+  const [text, setText] = React.useState('');
 
   const handleLogout = React.useCallback(() => {
     dispatch(logoutUser());
     history.push('/');
   }, [dispatch, history]);
 
-  const handleCreateTest = React.useCallback(() => {}, []);
+  const handleToggleModal = React.useCallback(() => setOpenModal(!openModal), [
+    openModal,
+  ]);
 
   React.useEffect(() => {
     if (login) {
@@ -67,6 +72,16 @@ const Home = () => {
     [dispatch, history]
   );
 
+  const handleCreateTest = React.useCallback(() => {
+    dispatch(createTest({ title: text }));
+    handleToggleModal();
+  }, [dispatch, text, handleToggleModal]);
+
+  const handleCreateTestInput = React.useCallback(
+    event => setText(event.target.value),
+    []
+  );
+
   return (
     <>
       {initialLoading ? (
@@ -92,7 +107,7 @@ const Home = () => {
               />
             </div>
             <div>
-              <button onClick={handleCreateTest} className={style.create}>
+              <button onClick={handleToggleModal} className={style.create}>
                 Create Test
               </button>
               <button onClick={handleLogout} className={style.logout}>
@@ -101,6 +116,17 @@ const Home = () => {
             </div>
           </Navbar>
           <TestList />
+          {openModal && (
+            <Modal close={handleToggleModal}>
+              <input
+                onChange={handleCreateTestInput}
+                value={text}
+                type="text"
+              />
+              <button onClick={handleCreateTest}>Create</button>
+              <button onClick={handleToggleModal}>Cancel</button>
+            </Modal>
+          )}
         </Fragment>
       )}
     </>

@@ -17,15 +17,28 @@ const Question = props => {
   const [editMode, setEditMode] = React.useState(false);
   const [answerTitle, setAnswerTitle] = React.useState('');
 
-  const _renderAnswers = React.useMemo(() => {
+  const answersList = React.useMemo(() => {
     return questions[question].answers.map(answer => (
       <Answer
         key={answer}
         answer={answer}
         type={questions[question].question_type}
+        active={!editMode}
+        questionId={question}
       />
     ));
-  }, [questions, question]);
+  }, [questions, question, editMode]);
+
+  const _renderAnswers = React.useMemo(() => {
+    if (questions[question].question_type === 'number') {
+      return editMode ? <input /> : questions[question].answer;
+    }
+    return answersList.length > 0 ? (
+      answersList
+    ) : (
+      <div className={style.warning}>no answers</div>
+    );
+  }, [questions, question, answersList, editMode]);
 
   const handleQuestionDelete = React.useCallback(() => {
     dispatch(deleteQuestion({ questionId: question, testId }));
@@ -38,6 +51,7 @@ const Question = props => {
         data: { text: answerTitle, is_right: false },
       })
     );
+    setAnswerTitle('');
   }, [dispatch, question, answerTitle]);
 
   const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
@@ -75,14 +89,8 @@ const Question = props => {
           </button>
         </div>
         <div className={style.answers}>
-          {questions[question].question_type === 'number' ? (
-            questions[question].answer
-          ) : _renderAnswers.length > 0 ? (
-            _renderAnswers
-          ) : (
-            <div className={style.warning}>no answers</div>
-          )}
-          {editMode && (
+          {_renderAnswers}
+          {editMode && questions[question].question_type !== 'number' && (
             <>
               <input
                 type="text"

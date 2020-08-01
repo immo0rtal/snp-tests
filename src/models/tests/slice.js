@@ -46,9 +46,12 @@ const testsSlice = createSlice({
     createTest(state) {
       state.loading = true;
     },
-    createTestSuccess(state, { payload }) {
+    createTestSuccess(state, { payload: { test } }) {
       state.loading = false;
-      state.tests.push(payload.test);
+      state.tests = {
+        ...state.tests,
+        [test.id]: test,
+      };
     },
     createTestFailed(state, { payload }) {
       state.loading = false;

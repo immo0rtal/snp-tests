@@ -1,5 +1,6 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
 import { fetchTests, postTest } from 'api/tests';
+import { push } from 'connected-react-router';
 
 import {
   getTests,
@@ -41,6 +42,7 @@ export function* createTestEffect(action) {
   try {
     const response = yield call(postTest, action.payload);
     yield put(createTestSuccess({ test: response.data }));
+    yield put(push(`/test/${response.data.id}`));
   } catch (err) {
     yield put(createTestFailed({ err }));
   }

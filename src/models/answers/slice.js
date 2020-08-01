@@ -26,6 +26,27 @@ const answersSlice = createSlice({
       state.loading = false;
       state.errorMessage = payload.err;
     },
+    deleteAnswer(state) {
+      state.loading = true;
+    },
+    deleteAnswerSuccess(state) {
+      state.loading = false;
+    },
+    deleteAnswerFailed(state, { payload }) {
+      state.loading = false;
+      state.errorMessage = payload.err;
+    },
+    changeAnswer(state) {
+      state.loading = true;
+    },
+    changeAnswerSuccess(state, { payload: { id, check } }) {
+      state.loading = false;
+      state.answers[id].is_right = check;
+    },
+    changeAnswerFailed(state, { payload }) {
+      state.loading = false;
+      state.errorMessage = payload.err;
+    },
   },
   extraReducers: {
     [actionGetTestsSuccess]: (state, { payload }) => {
@@ -38,6 +59,12 @@ export const {
   createAnswer,
   createAnswerSuccess,
   createAnswerFailed,
+  deleteAnswer,
+  deleteAnswerSuccess,
+  deleteAnswerFailed,
+  changeAnswer,
+  changeAnswerSuccess,
+  changeAnswerFailed,
 } = answersSlice.actions;
 
 export default answersSlice.reducer;
