@@ -2,7 +2,9 @@ import Req from './request';
 
 export const fetchTests = data =>
   Req.GET({
-    url: '/tests',
+    url: `/tests?page=${data.page}&per=${data.per}&sort=${
+      data.sort
+    }&search=${data.search || ''}`,
     data,
   });
 

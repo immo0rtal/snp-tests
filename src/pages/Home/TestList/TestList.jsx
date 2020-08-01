@@ -8,7 +8,11 @@ const TestList = () => {
   const tests = useSelector(testsSelector);
 
   const _renderTests = React.useMemo(() => {
-    return Object.values(tests).map(test => <Test data={test} key={test.id} />);
+    if (tests) {
+      return Object.values(tests).map(test => (
+        <Test data={test} key={test.id} />
+      ));
+    }
   }, [tests]);
 
   return <div className={style.list}>{_renderTests}</div>;

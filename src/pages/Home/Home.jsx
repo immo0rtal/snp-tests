@@ -18,6 +18,7 @@ import style from './Home.scss';
 import TestList from './TestList';
 import { getTests, changeSearchField, createTest } from 'models/tests/slice';
 import Modal from 'components/Modal';
+import Pagination from 'components/Pagination';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -116,6 +117,7 @@ const Home = () => {
             </div>
           </Navbar>
           <TestList />
+          <Pagination />
           {openModal && (
             <Modal close={handleToggleModal}>
               <input

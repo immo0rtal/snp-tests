@@ -31,6 +31,9 @@ const testsSlice = createSlice({
     changeSearchField(state, { payload }) {
       state.info.search = payload.value;
     },
+    changePage(state, { payload }) {
+      state.info.page = payload.page;
+    },
     getTests(state) {
       state.loading = true;
     },
@@ -84,6 +87,7 @@ const testsSlice = createSlice({
 });
 
 export const {
+  changePage,
   changeSearchField,
   getTests,
   getTestsSuccess,
