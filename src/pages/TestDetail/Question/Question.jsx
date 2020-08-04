@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import Answer from './Answer';
 import deleteIcon from 'images/delete.png';
 import edit from 'images/edit.png';
-import { deleteQuestion } from 'models/questions/slice';
+import { deleteQuestion, changePosition } from 'models/questions/slice';
 import Modal from 'components/Modal';
 import { createAnswer } from 'models/answers/slice';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const Question = props => {
   const { question, testId } = props;
@@ -17,17 +19,26 @@ const Question = props => {
   const [editMode, setEditMode] = React.useState(false);
   const [answerTitle, setAnswerTitle] = React.useState('');
 
+  const moveAnswer = React.useCallback(
+    (dragIndex, hoverIndex) => {
+      dispatch(changePosition({ questionId: question, dragIndex, hoverIndex }));
+    },
+    [dispatch, question]
+  );
+
   const answersList = React.useMemo(() => {
-    return questions[question].answers.map(answer => (
+    return questions[question].answers.map((answer, index) => (
       <Answer
         key={answer}
         answer={answer}
+        index={index}
         type={questions[question].question_type}
         active={!editMode}
         questionId={question}
+        moveAnswer={moveAnswer}
       />
     ));
-  }, [questions, question, editMode]);
+  }, [questions, question, editMode, moveAnswer]);
 
   const _renderAnswers = React.useMemo(() => {
     if (questions[question].question_type === 'number') {
@@ -68,7 +79,7 @@ const Question = props => {
   );
 
   return (
-    <div>
+    <DndProvider backend={HTML5Backend}>
       <div className={style.question}>
         <div className={style.title}>
           {editMode ? (
@@ -113,7 +124,7 @@ const Question = props => {
           </button>
         </Modal>
       )}
-    </div>
+    </DndProvider>
   );
 };
 

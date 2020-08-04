@@ -19,6 +19,7 @@ import TestList from './TestList';
 import { getTests, changeSearchField, createTest } from 'models/tests/slice';
 import Modal from 'components/Modal';
 import Pagination from 'components/Pagination';
+import { useDebounce } from 'hooks/useDebounce';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Home = () => {
   const history = useHistory();
   const [openModal, setOpenModal] = React.useState(false);
   const [text, setText] = React.useState('');
+  const infoDebounce = useDebounce(info, 500);
 
   const handleLogout = React.useCallback(() => {
     dispatch(logoutUser());
@@ -40,10 +42,13 @@ const Home = () => {
   ]);
 
   React.useEffect(() => {
-    if (login) {
-      dispatch(getTests({ info }));
+    if (login && infoDebounce.search !== '') {
+      dispatch(getTests({ info: infoDebounce }));
     }
-  }, [dispatch, info, login]);
+    if (infoDebounce.search === '') {
+      dispatch(changeSearchField({ value: null }));
+    }
+  }, [dispatch, login, infoDebounce]);
 
   React.useEffect(() => {
     if (!login && initialLoading) {
@@ -96,7 +101,6 @@ const Home = () => {
               <h1 className={style.title}>TestsApp</h1>
               <div className={style.username}>{data.username}</div>
               <div className={style.user}>
-                {' '}
                 {data.is_admin ? 'admin' : 'user'}
               </div>
             </div>
@@ -105,6 +109,7 @@ const Home = () => {
                 onChange={handleInputChange}
                 className={style.search}
                 type="text"
+                placeholder="Search"
               />
             </div>
             <div>
@@ -124,6 +129,7 @@ const Home = () => {
                 onChange={handleCreateTestInput}
                 value={text}
                 type="text"
+                placeholder="test name"
               />
               <button onClick={handleCreateTest}>Create</button>
               <button onClick={handleToggleModal}>Cancel</button>

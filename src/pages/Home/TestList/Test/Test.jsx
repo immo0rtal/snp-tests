@@ -13,6 +13,7 @@ const Test = props => {
   const history = useHistory();
   const { id, title } = props.data;
   const [showModal, setShowModal] = React.useState(false);
+  const [showOpenTestModal, setShowOpenTestModal] = React.useState(false);
 
   const handleEdit = React.useCallback(() => {
     history.push(`/test/${id}`);
@@ -26,9 +27,20 @@ const Test = props => {
     showModal,
   ]);
 
+  const handleOpenTest = React.useCallback(
+    () => setShowOpenTestModal(!showOpenTestModal),
+    [showOpenTestModal]
+  );
+
+  const handleRedirectToTest = React.useCallback(() => {
+    history.push(`/passing-test/${id}`);
+  }, [history, id]);
+
   return (
-    <div className={style.test}>
-      <div>{title}</div>
+    <div className={style.wrapper}>
+      <div className={style.test} onClick={handleOpenTest}>
+        <div>{title}</div>
+      </div>
       <div className={style.buttons}>
         <button className={style.edit_button} onClick={handleEdit}>
           <img className={style.edit} src={edit} alt="edit" />
@@ -43,6 +55,17 @@ const Test = props => {
             Delete
           </button>
           <button className={style.cancel_modal} onClick={handleToggleModal}>
+            Cancel
+          </button>
+        </Modal>
+      )}
+      {showOpenTestModal && (
+        <Modal close={handleOpenTest}>
+          do u want to start the test ?
+          <button className={style.open_modal} onClick={handleRedirectToTest}>
+            Yes
+          </button>
+          <button className={style.cancel_modal} onClick={handleOpenTest}>
             Cancel
           </button>
         </Modal>

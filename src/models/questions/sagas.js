@@ -16,7 +16,7 @@ export function* createQuestionEffect(action) {
     const response = yield call(postQuestion, data, id);
     yield put(createQuestionSuccess({ question: response.data, id }));
   } catch (err) {
-    yield put(createQuestionFailed({ err }));
+    yield put(createQuestionFailed({ err: err.response.data }));
   }
 }
 
@@ -26,7 +26,7 @@ export function* deleteQuestionEffect(action) {
     yield call(removeQuestion, questionId);
     yield put(deleteQuestionSuccess({ questionId, testId }));
   } catch (err) {
-    yield put(deleteQuestionFailed({ err }));
+    yield put(deleteQuestionFailed({ err: err.response.data }));
   }
 }
 

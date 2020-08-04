@@ -34,7 +34,7 @@ export function* getTestsEffect(action) {
       })
     );
   } catch (err) {
-    yield put(getTestsFailed({ err }));
+    yield put(getTestsFailed({ err: err.response.data }));
   }
 }
 
@@ -44,7 +44,7 @@ export function* createTestEffect(action) {
     yield put(createTestSuccess({ test: response.data }));
     yield put(push(`/test/${response.data.id}`));
   } catch (err) {
-    yield put(createTestFailed({ err }));
+    yield put(createTestFailed({ err: err.response.data }));
   }
 }
 

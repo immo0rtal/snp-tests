@@ -1,6 +1,8 @@
 import Home from 'pages/Home';
 import Auth from 'pages/Auth';
 import TestDetail from 'pages/TestDetail';
+import PassingTest from 'pages/PassingTest';
+import Register from 'pages/Register';
 
 export default [
   {
@@ -23,5 +25,19 @@ export default [
     cache: false,
     component: TestDetail,
     title: 'TestDetail',
+  },
+  {
+    path: '/passing-test/:id',
+    exact: true,
+    cache: false,
+    component: PassingTest,
+    title: 'PassingTest',
+  },
+  {
+    path: '/auth/register',
+    exact: true,
+    cache: false,
+    component: Register,
+    title: 'Register',
   },
 ];

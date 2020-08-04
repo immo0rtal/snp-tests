@@ -16,7 +16,7 @@ const testsSlice = createSlice({
     tests: {},
     info: {
       page: 1,
-      per: 5,
+      per: 7,
       search: null,
       sort: 'created_at_desc',
     },

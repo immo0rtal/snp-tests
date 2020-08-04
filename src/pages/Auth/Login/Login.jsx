@@ -3,7 +3,7 @@ import style from './Login.scss';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from 'models/authentication/slice';
+import { loginUser, deleteError } from 'models/authentication/slice';
 import { useHistory } from 'react-router-dom';
 import { loginSelector, dataSelector } from 'models/authentication/selectors';
 
@@ -23,9 +23,9 @@ const Login = () => {
   React.useEffect(() => {
     if (login) {
       history.push('/');
-      localStorage.setItem('users', JSON.stringify(data));
+      dispatch(deleteError());
     }
-  }, [login, history, data]);
+  }, [login, history, data, dispatch]);
 
   return (
     <Formik

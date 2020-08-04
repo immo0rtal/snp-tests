@@ -2,33 +2,35 @@
 
 import { createSlice } from 'redux-starter-kit';
 
-// import { normalize } from 'utils/normalizeById';
-
 const authSlice = createSlice({
   name: 'authentication',
   initialState: {
     data: {},
-    users: localStorage.getItem('users')
-      ? JSON.parse(localStorage.getItem('users'))
-      : false,
     loading: false,
     initialLoading: true,
     errorMessage: null,
+    registerError: null,
     login: false,
   },
   reducers: {
+    deleteError(state) {
+      state.errorMessage = null;
+      state.registerError = null;
+    },
     setInitialLoading(state, { payload }) {
       state.initialLoading = payload.value;
     },
     registerUser(state) {
       state.loading = true;
     },
-    registerUserSuccess(state) {
+    registerUserSuccess(state, { payload }) {
       state.loading = false;
+      state.data = payload.response;
+      state.login = true;
     },
     registerUserFailed(state, { payload }) {
       state.loading = false;
-      state.errorMessage = payload.err;
+      state.registerError = payload.err;
     },
     loginUser(state) {
       state.loading = true;
@@ -69,6 +71,7 @@ const authSlice = createSlice({
 });
 
 export const {
+  deleteError,
   setInitialLoading,
   registerUser,
   registerUserSuccess,

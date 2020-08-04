@@ -20,7 +20,7 @@ export function* createAnswerEffect(action) {
     const response = yield call(postAnswer, data, id);
     yield put(createAnswerSuccess({ answer: response.data, id }));
   } catch (err) {
-    yield put(createAnswerFailed({ err }));
+    yield put(createAnswerFailed({ err: err.response.data }));
   }
 }
 
@@ -31,7 +31,7 @@ export function* deleteAnswerEffect(action) {
     yield call(removeAnswer, answerId);
     yield put(deleteAnswerSuccess({ answerId, questionId }));
   } catch (err) {
-    yield put(deleteAnswerFailed({ err }));
+    yield put(deleteAnswerFailed({ err: err.response.data }));
   }
 }
 
@@ -46,7 +46,7 @@ export function* changeAnswerEffect(action) {
     const { id, is_right } = response.data;
     yield put(changeAnswerSuccess({ id, check: is_right }));
   } catch (err) {
-    yield put(changeAnswerFailed({ err }));
+    yield put(changeAnswerFailed({ err: err.response.data }));
   }
 }
 

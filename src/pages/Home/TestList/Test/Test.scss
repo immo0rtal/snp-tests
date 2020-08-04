@@ -24,10 +24,17 @@
 }
 
 .buttons {
+  position: absolute;
+  top: 35px;
+  right: 10px;
   display: flex;
   align-items: center;
 }
 
 .edit_button {
   margin-top: -5px;
+}
+
+.wrapper {
+  position: relative;
 }

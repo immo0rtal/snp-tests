@@ -27,7 +27,7 @@ export function* registerUserEffect(action) {
     const response = yield call(fetchUserRegister, data);
     yield put(registerUserSuccess({ response: response.data }));
   } catch (err) {
-    yield put(registerUserFailed({ err }));
+    yield put(registerUserFailed({ err: err.response.data }));
   }
 }
 
@@ -37,7 +37,7 @@ export function* loginUserEffect(action) {
     const response = yield call(fetchUserLogin, data);
     yield put(loginUserSuccess({ response: response.data }));
   } catch (err) {
-    yield put(loginUserFailed({ err }));
+    yield put(loginUserFailed({ err: err.response.data }));
   }
 }
 
@@ -46,7 +46,7 @@ export function* checkCurrentUserEffect() {
     const data = yield call(fetchCurrentUser);
     yield put(checkCurrentUserSuccess({ data: data.data }));
   } catch (err) {
-    yield put(checkCurrentUserFailed({ err }));
+    yield put(checkCurrentUserFailed({ err: err.response.data }));
   }
 }
 
@@ -55,7 +55,7 @@ export function* logoutUserEffect() {
     yield call(fetchLogoutUser);
     yield put(logoutUserSuccess());
   } catch (err) {
-    yield put(logoutUserFailed({ err }));
+    yield put(logoutUserFailed({ err: err.response.data }));
   }
 }
 
