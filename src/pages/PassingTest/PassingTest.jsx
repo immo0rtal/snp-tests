@@ -49,6 +49,7 @@ const PassingTest = props => {
         return acc;
       }, []);
     }
+    return null;
   }, [tests, id, checkValid]);
 
   React.useEffect(() => {
@@ -61,6 +62,7 @@ const PassingTest = props => {
           return acc;
         }, {})
       );
+    return null;
   }, [tests, id, validQuestions, checkValid]);
 
   const changeValue = React.useCallback(
@@ -90,19 +92,24 @@ const PassingTest = props => {
             />
           );
         }
+        return null;
       });
     }
+    return null;
   }, [tests, id, checkValid, changeValue, validQuestions]);
 
   const _renderResults = React.useMemo(() => {
     if (result) {
       return validQuestions.map((question, index) => (
-        <div key={question * 3}>
-          {index}
-          {result[question] ? 'right' : 'wrong'}
+        <div className={style.result_wrapper} key={question * 3}>
+          <div>{index + 1}</div>
+          <div className={style.answer_result}>
+            {result[question] ? 'right' : 'wrong'}
+          </div>
         </div>
       ));
     }
+    return null;
   }, [validQuestions, result]);
 
   return (
@@ -113,8 +120,9 @@ const PassingTest = props => {
         </button>
         <button onClick={handleToggleModal}>Finish Test</button>
       </Navbar>
-      <div>{tests[id] && tests[id].title}</div>
+      <div className={style.test_title}>{tests[id] && tests[id].title}</div>
       <div className={style.wrapper}>{questionsList}</div>
+      <div className={style.footer} />
       {showModal && (
         <Modal close={handleToggleModal}>
           {_renderResults}

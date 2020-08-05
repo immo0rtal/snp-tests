@@ -6,3 +6,25 @@
   margin: 0 auto;
   width: 700px;
 }
+
+.test_title {
+  margin: 40px auto;
+  font-size: 35px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.answer_result {
+  margin-left: 10px;
+}
+
+.result_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  height: 60px;
+}

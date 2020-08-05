@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import edit from 'images/edit.png';
 import deleteIcon from 'images/delete.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTest } from 'models/tests/slice';
+import { deleteTest, getTests } from 'models/tests/slice';
 import Modal from 'components/Modal';
 
 const Test = props => {
@@ -15,6 +15,8 @@ const Test = props => {
   const [showModal, setShowModal] = React.useState(false);
   const [showOpenTestModal, setShowOpenTestModal] = React.useState(false);
   const isAdmin = useSelector(state => state.auth.isAdmin);
+  const info = useSelector(state => state.tests.info);
+  const tetsByid = useSelector(state => state.tests.testsById);
 
   const handleEdit = React.useCallback(() => {
     history.push(`/test/${id}`);
@@ -22,7 +24,11 @@ const Test = props => {
 
   const handleDelete = React.useCallback(() => {
     dispatch(deleteTest({ id }));
-  }, [dispatch, id]);
+    setShowModal(false);
+    if (tetsByid.length > 6) {
+      dispatch(getTests({ info }));
+    }
+  }, [dispatch, id, info, tetsByid]);
 
   const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
     showModal,

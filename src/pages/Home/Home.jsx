@@ -30,8 +30,9 @@ const Home = () => {
   const history = useHistory();
   const [openModal, setOpenModal] = React.useState(false);
   const [text, setText] = React.useState('');
-  const infoDebounce = useDebounce(info, 500);
+  const infoDebounce = useDebounce(info, 400);
   const isAdmin = useSelector(state => state.auth.isAdmin);
+  const testsById = useSelector(state => state.tests.testsById);
 
   const handleLogout = React.useCallback(() => {
     dispatch(logoutUser());
@@ -125,7 +126,11 @@ const Home = () => {
             </div>
           </Navbar>
           <TestList />
-          <Pagination />
+          {testsById.length > 0 ? (
+            <Pagination />
+          ) : (
+            <div className={style.message}>no tests</div>
+          )}
           {openModal && (
             <Modal close={handleToggleModal}>
               <input

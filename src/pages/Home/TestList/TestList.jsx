@@ -6,14 +6,16 @@ import Test from './Test';
 
 const TestList = () => {
   const tests = useSelector(testsSelector);
+  const testsById = useSelector(state => state.tests.testsById);
 
   const _renderTests = React.useMemo(() => {
-    if (tests) {
-      return Object.values(tests).map(test => (
-        <Test data={test} key={test.id} />
+    if (tests && testsById) {
+      return testsById.map(test => (
+        <Test data={tests[test]} key={tests[test].id} />
       ));
     }
-  }, [tests]);
+    return null;
+  }, [tests, testsById]);
 
   return <div className={style.list}>{_renderTests}</div>;
 };

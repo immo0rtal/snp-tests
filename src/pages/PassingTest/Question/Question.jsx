@@ -39,15 +39,15 @@ const Question = props => {
   const [selectedAnsers, setSelectedAnsers] = React.useState([]);
 
   const isEqual = (a, b) => {
-    const a1 = a.sort(),
-      a2 = b.sort();
+    const a1 = a.sort();
+    const a2 = b.sort();
     return a1.length === a2.sort().length && a1.every((v, i) => v === a2[i]);
   };
 
   const checkResult = React.useCallback(
     number => {
       if (isEqual(correctAnswers, number)) {
-        return change(question, true);
+        change(question, true);
       } else {
         change(question, false);
       }

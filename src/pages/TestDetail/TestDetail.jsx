@@ -35,7 +35,7 @@ const TestDetail = props => {
         <Question key={question} question={question} testId={id} />
       ));
     }
-    return '';
+    return null;
   }, [tests, id]);
 
   const handleBack = React.useCallback(() => {
@@ -45,6 +45,7 @@ const TestDetail = props => {
   const handleCreateQuestion = React.useCallback(
     values => {
       dispatch(createQuestion({ data: values, id }));
+      setCreateFormOpen(false);
     },
     [dispatch, id]
   );
@@ -73,7 +74,11 @@ const TestDetail = props => {
           <img className={style.title_edit_img} src={edit} alt="edit" />
         </button>
       </div>
-      <div className={style.questions}>{_renderQuestions}</div>
+      {tests[id] && tests[id].questions ? (
+        <div className={style.questions}>{_renderQuestions}</div>
+      ) : (
+        <div className={style.message}>no questions</div>
+      )}
       {createFormOpen ? (
         <div className={style.create}>
           <button onClick={handleOpenCreateQuestion}>close</button>

@@ -31,6 +31,7 @@ export function* getTestsEffect(action) {
     yield put(
       getTestsSuccess({
         tests,
+        testsById: normalizedData.result,
         questions,
         answers,
         meta: response.data.meta,

@@ -2,8 +2,6 @@
 
 import { createSlice, createAction } from 'redux-starter-kit';
 
-import { omit } from 'utils/omit';
-
 const actionCreateQuestionSuccess = createAction(
   'questions/createQuestionSuccess'
 );
@@ -16,6 +14,7 @@ const testsSlice = createSlice({
   name: 'tests',
   initialState: {
     tests: {},
+    testsById: [],
     info: {
       page: 1,
       per: 7,
@@ -43,6 +42,7 @@ const testsSlice = createSlice({
       state.loading = false;
       state.tests = payload.tests;
       state.meta = payload.meta;
+      state.testsById = payload.testsById;
     },
     getTestsFailed(state, { payload }) {
       state.loading = false;
@@ -67,7 +67,7 @@ const testsSlice = createSlice({
     },
     deleteTestSuccess(state, { payload }) {
       state.loading = false;
-      state.tests = omit(state.tests, [payload.id]);
+      state.testsById = state.testsById.filter(el => el !== payload.id);
     },
     deleteTestFailed(state, { payload }) {
       state.loading = false;
