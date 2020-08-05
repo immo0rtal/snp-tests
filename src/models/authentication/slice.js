@@ -7,6 +7,7 @@ const authSlice = createSlice({
   initialState: {
     data: {},
     loading: false,
+    isAdmin: false,
     initialLoading: true,
     errorMessage: null,
     registerError: null,
@@ -26,6 +27,7 @@ const authSlice = createSlice({
     registerUserSuccess(state, { payload }) {
       state.loading = false;
       state.data = payload.response;
+      state.isAdmin = payload.response.is_admin;
       state.login = true;
     },
     registerUserFailed(state, { payload }) {
@@ -38,6 +40,7 @@ const authSlice = createSlice({
     loginUserSuccess(state, { payload }) {
       state.loading = false;
       state.data = payload.response;
+      state.isAdmin = payload.response.is_admin;
       state.login = true;
     },
     loginUserFailed(state, { payload }) {
@@ -50,6 +53,7 @@ const authSlice = createSlice({
     checkCurrentUserSuccess(state, { payload }) {
       state.initialLoading = false;
       state.data = payload.data;
+      state.isAdmin = payload.data.is_admin;
       state.login = true;
     },
     checkCurrentUserFailed(state, { payload }) {

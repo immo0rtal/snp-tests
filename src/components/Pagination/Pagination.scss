@@ -7,5 +7,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.button_img {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.button {
+  margin-right: 15px;
+}
+
+.wrapper {
   margin: 30px auto;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

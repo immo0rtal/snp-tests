@@ -1,13 +1,31 @@
 import React from 'react';
 import style from './Radio.scss';
+import PropTypes from 'prop-types';
 
-const Radio = () => {
+const Radio = props => {
+  const { onChange, checked } = props;
+
   return (
     <label className={style.radio}>
-      <input className={style.radio__input} type="radio" />
-      <span className={style.radio_img}></span>
+      <input
+        className={style.radio__input}
+        checked={checked}
+        onChange={onChange}
+        type="radio"
+      />
+      <span className={style.radio_img} />
     </label>
   );
 };
 
-export default Radio;
+Radio.propTypes = {
+  checked: PropTypes.bool,
+  onChange: PropTypes.func,
+};
+
+Radio.defaultProps = {
+  checked: false,
+  onChange: () => {},
+};
+
+export default React.memo(Radio);

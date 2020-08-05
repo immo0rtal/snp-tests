@@ -14,10 +14,10 @@ export const postTest = data =>
     data,
   });
 
-export const removeTest = data =>
+export const removeTest = id =>
   Req.DELETE({
-    url: `/tests/${data.id}`,
-    data,
+    url: `/tests/${id}`,
+    id,
   });
 
 export const patchTest = data =>

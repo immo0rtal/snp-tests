@@ -11,6 +11,7 @@ import Dropdown from 'components/Dropdown';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createQuestion } from 'models/questions/slice';
+import edit from 'images/edit.png';
 
 const TestDetail = props => {
   const login = useSelector(loginSelector);
@@ -63,10 +64,15 @@ const TestDetail = props => {
         <button onClick={handleBack}>
           <img className={style.arrow} src={arrow} alt="back" />
         </button>
-        <div>{tests[id] && tests[id].title}</div>
         <button className={style.logout}>Logout</button>
       </Navbar>
       <button onClick={scrollToBottom}>scroll</button>
+      <div className={style.question_title}>
+        {tests[id] && tests[id].title}
+        <button className={style.title_edit}>
+          <img className={style.title_edit_img} src={edit} alt="edit" />
+        </button>
+      </div>
       <div className={style.questions}>{_renderQuestions}</div>
       {createFormOpen ? (
         <div className={style.create}>

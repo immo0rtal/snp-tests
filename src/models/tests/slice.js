@@ -2,6 +2,8 @@
 
 import { createSlice, createAction } from 'redux-starter-kit';
 
+import { omit } from 'utils/omit';
+
 const actionCreateQuestionSuccess = createAction(
   'questions/createQuestionSuccess'
 );
@@ -60,15 +62,23 @@ const testsSlice = createSlice({
       state.loading = false;
       state.errorMessage = payload.err;
     },
-    delelteTest(state) {
+    deleteTest(state) {
       state.loading = true;
     },
-    deleteTestSuccess(state) {
+    deleteTestSuccess(state, { payload }) {
       state.loading = false;
+      state.tests = omit(state.tests, [payload.id]);
     },
     deleteTestFailed(state, { payload }) {
       state.loading = false;
       state.errorMessage = payload.err;
+    },
+    changeDateFilter(state) {
+      if (state.info.sort === 'created_at_desc') {
+        state.info.sort = 'created_at_asc';
+      } else {
+        state.info.sort = 'created_at_desc';
+      }
     },
   },
   extraReducers: {
@@ -87,6 +97,7 @@ const testsSlice = createSlice({
 });
 
 export const {
+  changeDateFilter,
   changePage,
   changeSearchField,
   getTests,
@@ -95,6 +106,9 @@ export const {
   createTest,
   createTestSuccess,
   createTestFailed,
+  deleteTest,
+  deleteTestSuccess,
+  deleteTestFailed,
 } = testsSlice.actions;
 
 export default testsSlice.reducer;

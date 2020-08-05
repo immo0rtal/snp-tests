@@ -14,7 +14,7 @@ const Checkbox = props => {
         onChange={onChange}
         type="checkbox"
       />
-      <span className={style.сheckbox}></span>
+      <span className={style.сheckbox} />
     </label>
   );
 };

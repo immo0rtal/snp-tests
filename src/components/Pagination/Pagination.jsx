@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePage } from 'models/tests/slice';
+import { changePage, changeDateFilter } from 'models/tests/slice';
 import style from './Pagination.scss';
 
 const Pagination = () => {
@@ -23,23 +23,32 @@ const Pagination = () => {
     [testsPage, dispatch]
   );
 
+  const handleChangeDateFilter = React.useCallback(() => {
+    dispatch(changeDateFilter());
+  }, [dispatch]);
+
   return (
-    <div className={style.pagination}>
-      <button
-        data-direction="left"
-        onClick={handleChangePage}
-        disabled={testsPage === 1}
-      >
-        left
+    <div className={style.wrapper}>
+      <button className={style.button} onClick={handleChangeDateFilter}>
+        <div className={style.button_img}>date</div>
       </button>
-      {testsPage}
-      <button
-        data-direction="right"
-        onClick={handleChangePage}
-        disabled={testsPage === meta.total_pages}
-      >
-        right
-      </button>
+      <div className={style.pagination}>
+        <button
+          data-direction="left"
+          onClick={handleChangePage}
+          disabled={testsPage === 1}
+        >
+          left
+        </button>
+        {testsPage}
+        <button
+          data-direction="right"
+          onClick={handleChangePage}
+          disabled={testsPage === meta.total_pages}
+        >
+          right
+        </button>
+      </div>
     </div>
   );
 };

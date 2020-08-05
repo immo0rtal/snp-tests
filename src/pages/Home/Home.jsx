@@ -31,6 +31,7 @@ const Home = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const [text, setText] = React.useState('');
   const infoDebounce = useDebounce(info, 500);
+  const isAdmin = useSelector(state => state.auth.isAdmin);
 
   const handleLogout = React.useCallback(() => {
     dispatch(logoutUser());
@@ -113,9 +114,11 @@ const Home = () => {
               />
             </div>
             <div>
-              <button onClick={handleToggleModal} className={style.create}>
-                Create Test
-              </button>
+              {isAdmin && (
+                <button onClick={handleToggleModal} className={style.create}>
+                  Create Test
+                </button>
+              )}
               <button onClick={handleLogout} className={style.logout}>
                 Logout
               </button>

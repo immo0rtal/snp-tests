@@ -4,16 +4,17 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import edit from 'images/edit.png';
 import deleteIcon from 'images/delete.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteTest } from 'models/tests/slice';
 import Modal from 'components/Modal';
 
 const Test = props => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id, title } = props.data;
+  const { id, title, created_at } = props.data;
   const [showModal, setShowModal] = React.useState(false);
   const [showOpenTestModal, setShowOpenTestModal] = React.useState(false);
+  const isAdmin = useSelector(state => state.auth.isAdmin);
 
   const handleEdit = React.useCallback(() => {
     history.push(`/test/${id}`);
@@ -39,16 +40,23 @@ const Test = props => {
   return (
     <div className={style.wrapper}>
       <div className={style.test} onClick={handleOpenTest}>
-        <div>{title}</div>
+        <div className={style.title}>
+          <div>{title}</div>
+          <div className={style.date}>
+            {new Date(created_at).toLocaleDateString('ru-RU')}
+          </div>
+        </div>
       </div>
-      <div className={style.buttons}>
-        <button className={style.edit_button} onClick={handleEdit}>
-          <img className={style.edit} src={edit} alt="edit" />
-        </button>
-        <button className={style.delete_button} onClick={handleToggleModal}>
-          <img className={style.delete} src={deleteIcon} alt="delete" />
-        </button>
-      </div>
+      {isAdmin && (
+        <div className={style.buttons}>
+          <button className={style.edit_button} onClick={handleEdit}>
+            <img className={style.edit} src={edit} alt="edit" />
+          </button>
+          <button className={style.delete_button} onClick={handleToggleModal}>
+            <img className={style.delete} src={deleteIcon} alt="delete" />
+          </button>
+        </div>
+      )}
       {showModal && (
         <Modal close={handleToggleModal}>
           <button className={style.delete_modal} onClick={handleDelete}>

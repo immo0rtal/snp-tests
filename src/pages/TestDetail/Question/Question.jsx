@@ -10,6 +10,7 @@ import Modal from 'components/Modal';
 import { createAnswer } from 'models/answers/slice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import close from 'images/close.jpg';
 
 const Question = props => {
   const { question, testId } = props;
@@ -42,7 +43,11 @@ const Question = props => {
 
   const _renderAnswers = React.useMemo(() => {
     if (questions[question].question_type === 'number') {
-      return editMode ? <input /> : questions[question].answer;
+      return editMode ? (
+        <input value={questions[question].answer} />
+      ) : (
+        questions[question].answer
+      );
     }
     return answersList.length > 0 ? (
       answersList
@@ -96,7 +101,11 @@ const Question = props => {
             <img className={style.delete_img} src={deleteIcon} alt="delete" />
           </button>
           <button onClick={handleEditQuestion} className={style.edit}>
-            <img className={style.edit_img} src={edit} alt="edit" />
+            {editMode ? (
+              <img className={style.edit_img} src={close} alt="close" />
+            ) : (
+              <img className={style.edit_img} src={edit} alt="edit" />
+            )}
           </button>
         </div>
         <div className={style.answers}>
