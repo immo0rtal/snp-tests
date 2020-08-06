@@ -8,6 +8,7 @@ import Navbar from 'components/Navbar';
 import arrow from 'images/arrow.jpg';
 import { useHistory } from 'react-router-dom';
 import { loginSelector } from 'models/authentication/selectors';
+import Checkbox from 'components/Checkbox';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,9 @@ const Register = () => {
       </Navbar>
       {error && (
         <div className={style.error}>
-          {error.username[0] || error.password[0]}
+          {(error.username && error.username[0]) ||
+            (error.password && error.password[0]) ||
+            (error.password_confirmation && error.password_confirmation[0])}
           <button onClick={handleCloseError}>X</button>
         </div>
       )}
@@ -66,7 +69,7 @@ const Register = () => {
           dispatch(registerUser({ data: values }));
         }}
       >
-        {() => (
+        {({ handleChange, values }) => (
           <Form className={style.form}>
             <Field
               className={`${style.input} ${style.username}`}
@@ -89,16 +92,14 @@ const Register = () => {
               placeholder="password_confirmation"
             />
             <ErrorMessage name="password_confirmation" component="div" />
-            <label htmlFor="admin">
-              <Field
-                className={style.is_admin}
-                type="checkbox"
+            <div className={style.checkbox}>
+              <Checkbox
                 name="is_admin"
-                id="admin"
+                onChange={handleChange}
+                checked={values.is_admin}
               />
-              Are you admin
-            </label>
-            <ErrorMessage name="is_admin" component="div" />
+              <div className={style.text}>Admin roots</div>
+            </div>
             <button className={style.submit} type="submit">
               REGISTER
             </button>

@@ -3,7 +3,7 @@
 .title {
   font-size: 25px;
   color: $color-dark;
-  margin-left: 50px;
+  margin-left: 10px;
 }
 
 .form {
@@ -14,7 +14,6 @@
   padding: 30px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   transition: width 0.8s;
   margin: 0 auto;
 }
@@ -86,4 +85,19 @@
   font-family: 'Roboto', sans-serif;
   padding: 13px;
   background-color: rgba(255, 38, 0, 0.411);
+}
+
+.checkbox {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.text {
+  margin-left: 30px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 }

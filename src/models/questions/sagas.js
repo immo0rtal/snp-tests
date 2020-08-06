@@ -1,5 +1,5 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { postQuestion, removeQuestion } from 'api/tests';
+import { postQuestion, removeQuestion, swapAnswers } from 'api/tests';
 
 import {
   createQuestion,
@@ -8,6 +8,8 @@ import {
   deleteQuestion,
   deleteQuestionSuccess,
   deleteQuestionFailed,
+  changePosition,
+  changePositionFailed,
 } from './slice';
 
 export function* createQuestionEffect(action) {
@@ -30,9 +32,19 @@ export function* deleteQuestionEffect(action) {
   }
 }
 
+export function* swapAnswersEffect(action) {
+  const { answerId, hoverIndex } = action.payload;
+  try {
+    yield call(swapAnswers, answerId, hoverIndex);
+  } catch (err) {
+    yield put(changePositionFailed({ err: err.response.data }));
+  }
+}
+
 export default function*() {
   yield all([
     takeEvery(createQuestion, createQuestionEffect),
     takeEvery(deleteQuestion, deleteQuestionEffect),
+    takeEvery(changePosition, swapAnswersEffect),
   ]);
 }

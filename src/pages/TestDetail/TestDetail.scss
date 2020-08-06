@@ -15,7 +15,7 @@
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  margin: 20px auto 40px;
+  margin: 20px auto 60px;
   width: 700px;
   background: white;
 }
@@ -27,6 +27,26 @@
 
 .form {
   display: flex;
+}
+
+.username {
+  background: $color-lightgray;
+  font-size: 18px;
+  color: $color-blue;
+  margin-left: 50px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.user {
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 18px;
+  margin-left: 15px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .add_wrapper {
@@ -41,7 +61,7 @@
 }
 
 .question_title {
-  margin: 0 auto;
+  margin: 30px auto 0;
   font-size: 35px;
   text-align: center;
   display: flex;
@@ -61,4 +81,45 @@
   text-align: center;
   margin-top: 30px;
   font-family: 'Roboto', sans-serif;
+}
+
+.scroll {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 50px;
+}
+
+.up {
+  margin-bottom: 30px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.plus {
+  max-width: 50px;
+}
+
+.name_app {
+  font-size: 25px;
+  color: $color-dark;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.logout {
+  padding: 10px;
+  border-radius: 9px;
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 450;
+  margin-right: 60px;
 }

@@ -114,17 +114,19 @@ const Question = props => {
 
   return (
     <div className={style.question}>
-      <div>{questions[question].title}</div>
-      {questions[question].question_type === 'number' ? (
-        <input
-          placeholder="your answer"
-          value={text}
-          onChange={handleNumberAnswerInputChange}
-          onBlur={handleNumberAnswerOnBlur}
-        />
-      ) : (
-        <div>{_renderAnswers}</div>
-      )}
+      <div className={style.title}>{questions[question].title}</div>
+      <div className={style.answers}>
+        {questions[question].question_type === 'number' ? (
+          <input
+            placeholder="your answer"
+            value={text}
+            onChange={handleNumberAnswerInputChange}
+            onBlur={handleNumberAnswerOnBlur}
+          />
+        ) : (
+          <div>{_renderAnswers}</div>
+        )}
+      </div>
     </div>
   );
 };

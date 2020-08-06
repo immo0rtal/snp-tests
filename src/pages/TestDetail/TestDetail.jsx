@@ -12,6 +12,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createQuestion } from 'models/questions/slice';
 import edit from 'images/edit.png';
+import plus from 'images/plus.png';
 
 const TestDetail = props => {
   const login = useSelector(loginSelector);
@@ -19,13 +20,16 @@ const TestDetail = props => {
   const dispatch = useDispatch();
   const { id } = props.match.params;
   const [createFormOpen, setCreateFormOpen] = React.useState(false);
-  const createButtonRef = React.useRef(null);
+  const scrollToBottomRef = React.useRef(null);
+  const scrollToTopRef = React.useRef(null);
+  const data = useSelector(state => state.auth.data);
+  const isAdmin = useSelector(state => state.auth.isAdmin);
 
   React.useEffect(() => {
-    if (!login) {
+    if (!login && !isAdmin) {
       history.push('/');
     }
-  }, [history, login]);
+  }, [history, login, isAdmin]);
 
   const tests = useSelector(state => state.tests.tests);
 
@@ -50,24 +54,36 @@ const TestDetail = props => {
     [dispatch, id]
   );
 
-  const handleOpenCreateQuestion = React.useCallback(
-    () => setCreateFormOpen(!createFormOpen),
-    [createFormOpen]
-  );
-
   const scrollToBottom = React.useCallback(() => {
-    createButtonRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [createButtonRef]);
+    scrollToBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [scrollToBottomRef]);
+
+  const handleOpenCreateQuestion = React.useCallback(() => {
+    setCreateFormOpen(!createFormOpen);
+  }, [createFormOpen]);
+
+  const scrollToTop = React.useCallback(() => {
+    scrollToTopRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [scrollToTopRef]);
 
   return (
     <div>
       <Navbar>
-        <button onClick={handleBack}>
-          <img className={style.arrow} src={arrow} alt="back" />
-        </button>
-        <button className={style.logout}>Logout</button>
+        <div className={style.title}>
+          <button onClick={handleBack} ref={scrollToTopRef}>
+            <img className={style.arrow} src={arrow} alt="back" />
+          </button>
+          <h1 className={style.name_app}>TestsApp</h1>
+          <div className={style.username}>{data.username}</div>
+          <div className={style.user}>{data.is_admin ? 'admin' : 'user'}</div>
+        </div>
       </Navbar>
-      <button onClick={scrollToBottom}>scroll</button>
+      <div className={style.scroll}>
+        <button className={style.up} onClick={scrollToTop}>
+          up
+        </button>
+        <button onClick={scrollToBottom}>down</button>
+      </div>
       <div className={style.question_title}>
         {tests[id] && tests[id].title}
         <button className={style.title_edit}>
@@ -79,54 +95,56 @@ const TestDetail = props => {
       ) : (
         <div className={style.message}>no questions</div>
       )}
-      {createFormOpen ? (
-        <div className={style.create}>
-          <button onClick={handleOpenCreateQuestion}>close</button>
-          <Formik
-            initialValues={{
-              title: '',
-              question_type: 'single',
-              answer: 0,
-            }}
-            validationSchema={Yup.object().shape({
-              title: Yup.string().required(),
-              answer: Yup.number(),
-            })}
-            onSubmit={handleCreateQuestion}
-          >
-            {({ values, setFieldValue }) => (
-              <Form className={style.form}>
-                <Field
-                  className={style.input}
-                  name="title"
-                  placeholder="question"
-                  type="text"
-                />
-                <ErrorMessage name="title" component="div" />
-                <Dropdown
-                  questionType={values.question_type}
-                  setFieldValue={setFieldValue}
-                />
-                {values.question_type === 'number' && (
+      <div ref={scrollToBottomRef}>
+        {createFormOpen ? (
+          <div className={style.create}>
+            <button onClick={handleOpenCreateQuestion}>close</button>
+            <Formik
+              initialValues={{
+                title: '',
+                question_type: 'single',
+                answer: 0,
+              }}
+              validationSchema={Yup.object().shape({
+                title: Yup.string().required(),
+                answer: Yup.number(),
+              })}
+              onSubmit={handleCreateQuestion}
+            >
+              {({ values, setFieldValue }) => (
+                <Form className={style.form}>
                   <Field
-                    className={style.answer}
-                    name="answer"
-                    placeholder="answer"
+                    className={style.input}
+                    name="title"
+                    placeholder="question"
                     type="text"
                   />
-                )}
-                <button type="submit">Create question</button>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      ) : (
-        <div className={style.add_wrapper} ref={createButtonRef}>
-          <button onClick={handleOpenCreateQuestion} className={style.add}>
-            +
-          </button>
-        </div>
-      )}
+                  <ErrorMessage name="title" component="div" />
+                  <Dropdown
+                    questionType={values.question_type}
+                    setFieldValue={setFieldValue}
+                  />
+                  {values.question_type === 'number' && (
+                    <Field
+                      className={style.answer}
+                      name="answer"
+                      placeholder="answer"
+                      type="text"
+                    />
+                  )}
+                  <button type="submit">Create question</button>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        ) : (
+          <div className={style.add_wrapper}>
+            <button onClick={handleOpenCreateQuestion} className={style.add}>
+              <img className={style.plus} src={plus} alt="plus" />
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

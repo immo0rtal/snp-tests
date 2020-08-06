@@ -81,8 +81,10 @@ const Home = () => {
   );
 
   const handleCreateTest = React.useCallback(() => {
-    dispatch(createTest({ title: text }));
-    handleToggleModal();
+    if (text !== '') {
+      dispatch(createTest({ title: text }));
+      handleToggleModal();
+    }
   }, [dispatch, text, handleToggleModal]);
 
   const handleCreateTestInput = React.useCallback(
@@ -133,14 +135,28 @@ const Home = () => {
           )}
           {openModal && (
             <Modal close={handleToggleModal}>
+              <div className={style.modal_title}>Chose test name</div>
               <input
+                className={style.modal_input}
                 onChange={handleCreateTestInput}
                 value={text}
                 type="text"
-                placeholder="test name"
+                placeholder="enter test name"
               />
-              <button onClick={handleCreateTest}>Create</button>
-              <button onClick={handleToggleModal}>Cancel</button>
+              <div className={style.buttons}>
+                <button
+                  className={style.modal_accept}
+                  onClick={handleCreateTest}
+                >
+                  Create
+                </button>
+                <button
+                  className={style.modal_cancel}
+                  onClick={handleToggleModal}
+                >
+                  Cancel
+                </button>
+              </div>
             </Modal>
           )}
         </Fragment>

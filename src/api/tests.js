@@ -55,3 +55,8 @@ export const patchAnswer = data =>
     url: `/answers/${data.id}`,
     data,
   });
+
+export const swapAnswers = (id, position) =>
+  Req.PATCH({
+    url: `/answers/${id}/insert_at/${position + 1}`,
+  });

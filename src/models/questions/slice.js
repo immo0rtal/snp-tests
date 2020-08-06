@@ -44,6 +44,9 @@ const questionsSlice = createSlice({
       const mass = state.questions[questionId].answers;
       [mass[dragIndex], mass[hoverIndex]] = [mass[hoverIndex], mass[dragIndex]];
     },
+    changePositionFailed(state, { payload }) {
+      state.errorMessage = payload.err;
+    },
   },
   extraReducers: {
     [actionGetTestsSuccess]: (state, { payload }) => {
@@ -65,6 +68,7 @@ const questionsSlice = createSlice({
 
 export const {
   changePosition,
+  changePositionFailed,
   createQuestion,
   createQuestionSuccess,
   createQuestionFailed,

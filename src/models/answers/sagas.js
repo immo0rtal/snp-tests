@@ -43,8 +43,8 @@ export function* changeAnswerEffect(action) {
       id: action.payload.id,
       text,
     });
-    const { id, is_right } = response.data;
-    yield put(changeAnswerSuccess({ id, check: is_right }));
+    const { id, is_right: isRight } = response.data;
+    yield put(changeAnswerSuccess({ id, check: isRight }));
   } catch (err) {
     yield put(changeAnswerFailed({ err: err.response.data }));
   }

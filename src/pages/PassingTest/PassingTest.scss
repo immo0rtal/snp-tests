@@ -1,3 +1,5 @@
+@use '~styles/variables' as *;
+
 .back {
   max-width: 40px;
 }
@@ -8,7 +10,7 @@
 }
 
 .test_title {
-  margin: 40px auto;
+  margin: 30px auto;
   font-size: 35px;
   text-align: center;
   display: flex;
@@ -21,10 +23,95 @@
 }
 
 .result_wrapper {
+  margin-top: 5px;
   display: flex;
+  font-size: 19px;
   align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.username {
+  background: $color-lightgray;
+  font-size: 18px;
+  color: $color-blue;
+  margin-left: 50px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.user {
+  background: $color-lightgray;
+  color: $color-blue;
+  font-size: 18px;
+  margin-left: 15px;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .footer {
   height: 60px;
+}
+
+.modal_title {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 25px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.modal_results {
+  margin-top: 10px;
+}
+
+.modal_buttons {
+  margin: 30px auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+}
+
+.modal_accept {
+  background: $color-light;
+  color: $color-green;
+  padding: 10px;
+  border-radius: 9px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.name_app {
+  font-size: 25px;
+  color: $color-dark;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.finish_test {
+  margin-right: 20px;
+  background: $color-light;
+  color: $color-green;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.right {
+  color: green;
+}
+
+.wrong {
+  color: red;
+}
+
+.no_questions {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 }

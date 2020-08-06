@@ -17,6 +17,7 @@ const PassingTest = props => {
   const login = useSelector(state => state.auth.login);
   const [result, setResult] = React.useState(null);
   const [showModal, setShowModal] = React.useState(false);
+  const data = useSelector(state => state.auth.data);
 
   const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
     showModal,
@@ -62,7 +63,7 @@ const PassingTest = props => {
           return acc;
         }, {})
       );
-    return null;
+    return undefined;
   }, [tests, id, validQuestions, checkValid]);
 
   const changeValue = React.useCallback(
@@ -98,13 +99,21 @@ const PassingTest = props => {
     return null;
   }, [tests, id, checkValid, changeValue, validQuestions]);
 
+  const handleGoToTestList = React.useCallback(() => {
+    history.push('/');
+  }, [history]);
+
   const _renderResults = React.useMemo(() => {
     if (result) {
       return validQuestions.map((question, index) => (
         <div className={style.result_wrapper} key={question * 3}>
-          <div>{index + 1}</div>
+          <div>{index + 1 + ')'}</div>
           <div className={style.answer_result}>
-            {result[question] ? 'right' : 'wrong'}
+            {result[question] ? (
+              <div className={style.right}>right</div>
+            ) : (
+              <div className={style.wrong}>wrong</div>
+            )}
           </div>
         </div>
       ));
@@ -115,18 +124,36 @@ const PassingTest = props => {
   return (
     <div>
       <Navbar>
-        <button onClick={handleGoBack}>
-          <img className={style.back} src={arrow} alt="back" />
+        <div className={style.title}>
+          <button onClick={handleGoBack}>
+            <img className={style.back} src={arrow} alt="back" />
+          </button>
+          <h1 className={style.name_app}>TestsApp</h1>
+          <div className={style.username}>{data.username}</div>
+          <div className={style.user}>{data.is_admin ? 'admin' : 'user'}</div>
+        </div>
+        <button className={style.finish_test} onClick={handleToggleModal}>
+          Finish Test
         </button>
-        <button onClick={handleToggleModal}>Finish Test</button>
       </Navbar>
       <div className={style.test_title}>{tests[id] && tests[id].title}</div>
-      <div className={style.wrapper}>{questionsList}</div>
+      <div className={style.wrapper}>
+        {tests[id] && tests[id].questions.length > 0 ? (
+          questionsList
+        ) : (
+          <div className={style.no_questions}>Test is empty</div>
+        )}
+      </div>
       <div className={style.footer} />
       {showModal && (
-        <Modal close={handleToggleModal}>
-          {_renderResults}
-          <button>go to test list</button>
+        <Modal disable>
+          <div className={style.modal_title}>Your results</div>
+          <div className={style.modal_results}>{_renderResults}</div>
+          <div className={style.modal_buttons}>
+            <button className={style.modal_accept} onClick={handleGoToTestList}>
+              go to test list
+            </button>
+          </div>
         </Modal>
       )}
     </div>

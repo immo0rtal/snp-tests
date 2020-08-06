@@ -1,3 +1,5 @@
+@use '~styles/variables' as *;
+
 .test {
   background: white;
   padding: 20px;
@@ -47,4 +49,34 @@
 .date {
   margin-left: 10px;
   opacity: 50%;
+}
+
+.modal_title {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.modal_buttons {
+  margin: 30px auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 180px;
+}
+
+.modal_accept {
+  background: $color-light;
+  color: $color-green;
+  padding: 10px;
+  border-radius: 9px;
+}
+
+.modal_cancel {
+  font-family: 'Roboto', sans-serif;
+  padding: 10px;
+  border-radius: 9px;
+  background: $color-lightgray;
+  color: $color-blue;
 }

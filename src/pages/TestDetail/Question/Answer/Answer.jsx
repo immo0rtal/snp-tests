@@ -46,7 +46,7 @@ const Answer = props => {
         return;
       }
 
-      moveAnswer(dragIndex, hoverIndex);
+      moveAnswer(dragIndex, hoverIndex, answer);
       item.index = hoverIndex;
     },
   });

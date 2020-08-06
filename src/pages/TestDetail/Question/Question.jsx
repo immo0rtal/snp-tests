@@ -18,11 +18,38 @@ const Question = props => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
+  const [showMessage, setShowMessage] = React.useState(false);
   const [answerTitle, setAnswerTitle] = React.useState('');
+  const answers = useSelector(state => state.answers.answers);
+
+  const checkValid = React.useCallback(
+    queId => {
+      const que = questions[queId];
+      const ansersList = que.answers.map(idx => answers[idx]);
+      const count = ansersList.filter(el => el.is_right).length;
+
+      if (
+        (que.question_type !== 'number' && count < 1) ||
+        (que.question_type === 'single' && count > 1) ||
+        (que.question_type === 'multiple' && count < 2)
+      ) {
+        return false;
+      }
+      return true;
+    },
+    [questions, answers]
+  );
 
   const moveAnswer = React.useCallback(
-    (dragIndex, hoverIndex) => {
-      dispatch(changePosition({ questionId: question, dragIndex, hoverIndex }));
+    (dragIndex, hoverIndex, answerId) => {
+      dispatch(
+        changePosition({
+          questionId: question,
+          dragIndex,
+          hoverIndex,
+          answerId,
+        })
+      );
     },
     [dispatch, question]
   );
@@ -52,7 +79,9 @@ const Question = props => {
     return answersList.length > 0 ? (
       answersList
     ) : (
-      <div className={style.warning}>no answers</div>
+      <div className={style.warning}>
+        No answers. This question won`t appear during the test
+      </div>
     );
   }, [questions, question, answersList, editMode]);
 
@@ -74,9 +103,14 @@ const Question = props => {
     showModal,
   ]);
 
-  const handleEditQuestion = React.useCallback(() => setEditMode(!editMode), [
-    editMode,
-  ]);
+  const handleEditQuestion = React.useCallback(() => {
+    setEditMode(!editMode);
+    if (!checkValid(question)) {
+      setShowMessage(true);
+    } else {
+      setShowMessage(false);
+    }
+  }, [editMode, checkValid, question]);
 
   const handleAnswerChangeInput = React.useCallback(
     event => setAnswerTitle(event.target.value),
@@ -102,7 +136,7 @@ const Question = props => {
           </button>
           <button onClick={handleEditQuestion} className={style.edit}>
             {editMode ? (
-              <img className={style.edit_img} src={close} alt="close" />
+              <img className={style.edit_img_close} src={close} alt="close" />
             ) : (
               <img className={style.edit_img} src={edit} alt="edit" />
             )}
@@ -111,26 +145,36 @@ const Question = props => {
         <div className={style.answers}>
           {_renderAnswers}
           {editMode && questions[question].question_type !== 'number' && (
-            <>
+            <div className={style.create_answer}>
               <input
+                className={style.create_answer_input}
                 type="text"
                 value={answerTitle}
                 onChange={handleAnswerChangeInput}
                 placeholder="answer"
               />
               <button onClick={handleAnswerCreate}>Create</button>
-            </>
+            </div>
           )}
         </div>
+        {showMessage && <div>this question is invalid</div>}
       </div>
       {showModal && (
         <Modal close={handleToggleModal}>
-          <button className={style.delete_modal} onClick={handleQuestionDelete}>
-            Delete
-          </button>
-          <button className={style.cancel_modal} onClick={handleToggleModal}>
-            Cancel
-          </button>
+          <div className={style.modal_title}>
+            Do u want to delete the question ?
+          </div>
+          <div className={style.modal_buttons}>
+            <button
+              className={style.modal_accept}
+              onClick={handleQuestionDelete}
+            >
+              Delete
+            </button>
+            <button className={style.modal_cancel} onClick={handleToggleModal}>
+              Cancel
+            </button>
+          </div>
         </Modal>
       )}
     </DndProvider>

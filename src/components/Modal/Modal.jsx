@@ -5,18 +5,18 @@ import style from './Modal.scss';
 import closeIcon from 'images/close.jpg';
 
 const Modal = props => {
-  const { close, children } = props;
+  const { close, children, disable } = props;
   const ref = React.useRef(null);
 
   React.useEffect(() => {
     const handleKeyDown = event => {
-      if (event.keyCode === 27) {
+      if (!disable && event.keyCode === 27) {
         close();
       }
     };
 
     const handleClickOutside = event => {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (!disable && ref.current && !ref.current.contains(event.target)) {
         close();
       }
     };
@@ -27,15 +27,16 @@ const Modal = props => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [close, ref]);
+  }, [close, ref, disable]);
 
   return createPortal(
     <div className={style.wrapper}>
       <div className={style.modal} ref={ref}>
-        <div>Are you sure ?</div>
-        <button onClick={close}>
-          <img className={style.close_button} src={closeIcon} alt="close" />
-        </button>
+        {!disable && (
+          <button onClick={close}>
+            <img className={style.close_button} src={closeIcon} alt="close" />
+          </button>
+        )}
         {children}
       </div>
     </div>,
@@ -46,11 +47,13 @@ const Modal = props => {
 Modal.propTypes = {
   close: PropTypes.func,
   children: PropTypes.node,
+  disable: PropTypes.bool,
 };
 
 Modal.defaultProps = {
   close: () => {},
   children: '',
+  disable: false,
 };
 
 export default React.memo(Modal);

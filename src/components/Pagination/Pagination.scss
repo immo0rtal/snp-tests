@@ -1,9 +1,11 @@
+@use '~styles/variables' as *;
+
 .pagination {
   background: white;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  padding: 20px;
+  width: 180px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,7 +15,9 @@
   background: white;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 17px;
+  display: flex;
+  align-items: center;
 }
 
 .button {
@@ -26,4 +30,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.right_arrow {
+  max-width: 34px;
+}
+
+.left_arrow {
+  max-width: 34px;
+}
+
+.page {
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  background: $color-lightgray;
+  color: $color-blue;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.up_arrow {
+  max-width: 25px;
+}
+
+.date_text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  margin-left: 7px;
 }

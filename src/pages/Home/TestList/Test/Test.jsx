@@ -11,8 +11,8 @@ import Modal from 'components/Modal';
 const Test = props => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id, title, created_at } = props.data;
-  const [showModal, setShowModal] = React.useState(false);
+  const { id, title, created_at: createdAt } = props.data;
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [showOpenTestModal, setShowOpenTestModal] = React.useState(false);
   const isAdmin = useSelector(state => state.auth.isAdmin);
   const info = useSelector(state => state.tests.info);
@@ -24,15 +24,16 @@ const Test = props => {
 
   const handleDelete = React.useCallback(() => {
     dispatch(deleteTest({ id }));
-    setShowModal(false);
+    setShowDeleteModal(false);
     if (tetsByid.length > 6) {
       dispatch(getTests({ info }));
     }
   }, [dispatch, id, info, tetsByid]);
 
-  const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
-    showModal,
-  ]);
+  const handleDeleteModal = React.useCallback(
+    () => setShowDeleteModal(!showDeleteModal),
+    [showDeleteModal]
+  );
 
   const handleOpenTest = React.useCallback(
     () => setShowOpenTestModal(!showOpenTestModal),
@@ -49,7 +50,7 @@ const Test = props => {
         <div className={style.title}>
           <div>{title}</div>
           <div className={style.date}>
-            {new Date(created_at).toLocaleDateString('ru-RU')}
+            {new Date(createdAt).toLocaleDateString('ru-RU')}
           </div>
         </div>
       </div>
@@ -58,30 +59,38 @@ const Test = props => {
           <button className={style.edit_button} onClick={handleEdit}>
             <img className={style.edit} src={edit} alt="edit" />
           </button>
-          <button className={style.delete_button} onClick={handleToggleModal}>
+          <button className={style.delete_button} onClick={handleDeleteModal}>
             <img className={style.delete} src={deleteIcon} alt="delete" />
           </button>
         </div>
       )}
-      {showModal && (
-        <Modal close={handleToggleModal}>
-          <button className={style.delete_modal} onClick={handleDelete}>
-            Delete
-          </button>
-          <button className={style.cancel_modal} onClick={handleToggleModal}>
-            Cancel
-          </button>
+      {showDeleteModal && (
+        <Modal close={handleDeleteModal}>
+          <div className={style.modal_title}>Do u want to delete test</div>
+          <div className={style.modal_buttons}>
+            <button className={style.modal_accept} onClick={handleDelete}>
+              Delete
+            </button>
+            <button className={style.modal_cancel} onClick={handleDeleteModal}>
+              Cancel
+            </button>
+          </div>
         </Modal>
       )}
       {showOpenTestModal && (
         <Modal close={handleOpenTest}>
-          do u want to start the test ?
-          <button className={style.open_modal} onClick={handleRedirectToTest}>
-            Yes
-          </button>
-          <button className={style.cancel_modal} onClick={handleOpenTest}>
-            Cancel
-          </button>
+          <div className={style.modal_title}>Do u want to start the test ?</div>
+          <div className={style.modal_buttons}>
+            <button
+              className={style.modal_accept}
+              onClick={handleRedirectToTest}
+            >
+              Yes
+            </button>
+            <button className={style.modal_cancel} onClick={handleOpenTest}>
+              Cancel
+            </button>
+          </div>
         </Modal>
       )}
     </div>
