@@ -1,5 +1,5 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { fetchTests, postTest, removeTest } from 'api/tests';
+import { fetchTests, postTest, removeTest, patchTest } from 'api/tests';
 import { push } from 'connected-react-router';
 
 import {
@@ -12,6 +12,9 @@ import {
   deleteTest,
   deleteTestSuccess,
   deleteTestFailed,
+  editTest,
+  editTestSuccess,
+  editTestFailed,
 } from './slice';
 
 import { normalize, schema } from 'normalizr';
@@ -62,10 +65,21 @@ export function* deleteTestEffect(action) {
   }
 }
 
+export function* editTestEffect(action) {
+  const { testId, title } = action.payload;
+  try {
+    yield call(patchTest, testId, { title });
+    yield put(editTestSuccess({ testId, title }));
+  } catch (err) {
+    yield put(editTestFailed({ err: err.response.data }));
+  }
+}
+
 export default function*() {
   yield all([
     takeEvery(getTests, getTestsEffect),
     takeEvery(createTest, createTestEffect),
     takeEvery(deleteTest, deleteTestEffect),
+    takeEvery(editTest, editTestEffect),
   ]);
 }

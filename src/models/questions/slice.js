@@ -19,12 +19,9 @@ const questionsSlice = createSlice({
     createQuestion(state) {
       state.loading = true;
     },
-    createQuestionSuccess(state, { payload }) {
+    createQuestionSuccess(state, { payload: { question } }) {
       state.loading = false;
-      state.questions = {
-        ...state.questions,
-        [payload.question.id]: payload.question,
-      };
+      state.questions[question.id] = question;
     },
     createQuestionFailed(state, { payload }) {
       state.loading = false;
@@ -45,6 +42,17 @@ const questionsSlice = createSlice({
       [mass[dragIndex], mass[hoverIndex]] = [mass[hoverIndex], mass[dragIndex]];
     },
     changePositionFailed(state, { payload }) {
+      state.errorMessage = payload.err;
+    },
+    editQuestion(state) {
+      state.loading = true;
+    },
+    editQuestionSuccess(state, { payload: { question } }) {
+      state.loading = false;
+      state.questions[question.id].title = question.title;
+    },
+    editQuestionFailed(state, { payload }) {
+      state.loading = false;
       state.errorMessage = payload.err;
     },
   },
@@ -75,6 +83,9 @@ export const {
   deleteQuestion,
   deleteQuestionSuccess,
   deleteQuestionFailed,
+  editQuestion,
+  editQuestionSuccess,
+  editQuestionFailed,
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

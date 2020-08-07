@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import arrow from 'images/arrow.jpg';
 import style from './PassingTest.scss';
 import Modal from 'components/Modal';
+import { checkValid } from 'utils/checkValid';
 
 const PassingTest = props => {
   const { id } = props.match.params;
@@ -23,48 +24,27 @@ const PassingTest = props => {
     showModal,
   ]);
 
-  const checkValid = React.useCallback(
-    queId => {
-      const question = questions[queId];
-      const ansersList = question.answers.map(idx => answers[idx]);
-      const count = ansersList.filter(el => el.is_right).length;
-
-      if (
-        (question.question_type !== 'number' && count < 1) ||
-        (question.question_type === 'single' && count > 1) ||
-        (question.question_type === 'multiple' && count < 2)
-      ) {
-        return false;
-      }
-      return true;
-    },
-    [questions, answers]
-  );
-
   const validQuestions = React.useMemo(() => {
     if (tests[id]) {
       return tests[id].questions.reduce((acc, que) => {
-        if (checkValid(que)) {
+        if (checkValid(que, questions, answers)) {
           return [...acc, que];
         }
         return acc;
       }, []);
     }
     return null;
-  }, [tests, id, checkValid]);
+  }, [tests, id, questions, answers]);
 
   React.useEffect(() => {
     if (tests[id])
       return setResult(
         validQuestions.reduce((acc, que) => {
-          if (checkValid(que)) {
-            return { ...acc, [que]: false };
-          }
-          return acc;
+          return { ...acc, [que]: false };
         }, {})
       );
     return undefined;
-  }, [tests, id, validQuestions, checkValid]);
+  }, [tests, id, validQuestions]);
 
   const changeValue = React.useCallback(
     (queId, value) => setResult({ ...result, [queId]: value }),
@@ -84,20 +64,17 @@ const PassingTest = props => {
   const questionsList = React.useMemo(() => {
     if (Object.values(tests).length > 0 && id && tests) {
       return validQuestions.map(questionId => {
-        if (checkValid(questionId)) {
-          return (
-            <Question
-              question={questionId}
-              key={questionId}
-              change={changeValue}
-            />
-          );
-        }
-        return null;
+        return (
+          <Question
+            question={questionId}
+            key={questionId}
+            change={changeValue}
+          />
+        );
       });
     }
     return null;
-  }, [tests, id, checkValid, changeValue, validQuestions]);
+  }, [tests, id, changeValue, validQuestions]);
 
   const handleGoToTestList = React.useCallback(() => {
     history.push('/');

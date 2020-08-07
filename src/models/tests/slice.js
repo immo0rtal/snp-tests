@@ -10,6 +10,10 @@ const actionDeleteQuestionSuccess = createAction(
   'questions/deleteQuestionSuccess'
 );
 
+const actionLogoutUserSuccess = createAction(
+  'authentication/logoutUserSuccess'
+);
+
 const testsSlice = createSlice({
   name: 'tests',
   initialState: {
@@ -53,10 +57,7 @@ const testsSlice = createSlice({
     },
     createTestSuccess(state, { payload: { test } }) {
       state.loading = false;
-      state.tests = {
-        ...state.tests,
-        [test.id]: test,
-      };
+      state.tests[test.id] = test;
     },
     createTestFailed(state, { payload }) {
       state.loading = false;
@@ -70,6 +71,17 @@ const testsSlice = createSlice({
       state.testsById = state.testsById.filter(el => el !== payload.id);
     },
     deleteTestFailed(state, { payload }) {
+      state.loading = false;
+      state.errorMessage = payload.err;
+    },
+    editTest(state) {
+      state.loading = true;
+    },
+    editTestSuccess(state, { payload: { testId, title } }) {
+      state.loading = false;
+      state.tests[testId].title = title;
+    },
+    editTestFailed(state, payload) {
       state.loading = false;
       state.errorMessage = payload.err;
     },
@@ -93,6 +105,10 @@ const testsSlice = createSlice({
         question => question !== questionId
       );
     },
+    [actionLogoutUserSuccess]: state => {
+      state.info.search = null;
+      state.info.sort = 'created_at_desc';
+    },
   },
 });
 
@@ -109,6 +125,9 @@ export const {
   deleteTest,
   deleteTestSuccess,
   deleteTestFailed,
+  editTest,
+  editTestSuccess,
+  editTestFailed,
 } = testsSlice.actions;
 
 export default testsSlice.reducer;

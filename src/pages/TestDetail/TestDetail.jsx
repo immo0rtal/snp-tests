@@ -8,11 +8,14 @@ import Navbar from 'components/Navbar';
 import Question from './Question';
 import { loginSelector } from 'models/authentication/selectors';
 import Dropdown from 'components/Dropdown';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { createQuestion } from 'models/questions/slice';
-import edit from 'images/edit.png';
 import plus from 'images/plus.png';
+import arrowUp from 'images/arrowUp.png';
+import arrowDown from 'images/arrowDown.png';
+import close from 'images/close.jpg';
+import { editTest } from 'models/tests/slice';
 
 const TestDetail = props => {
   const login = useSelector(loginSelector);
@@ -24,6 +27,9 @@ const TestDetail = props => {
   const scrollToTopRef = React.useRef(null);
   const data = useSelector(state => state.auth.data);
   const isAdmin = useSelector(state => state.auth.isAdmin);
+  const [editTitle, setEditTitle] = React.useState(false);
+  const tests = useSelector(state => state.tests.tests);
+  const [title, setTitle] = React.useState(tests[id] && tests[id].title);
 
   React.useEffect(() => {
     if (!login && !isAdmin) {
@@ -31,7 +37,12 @@ const TestDetail = props => {
     }
   }, [history, login, isAdmin]);
 
-  const tests = useSelector(state => state.tests.tests);
+  const handleEditTitle = React.useCallback(() => {
+    if (title) {
+      dispatch(editTest({ testId: id, title }));
+    }
+    setEditTitle(false);
+  }, [dispatch, title, id]);
 
   const _renderQuestions = React.useMemo(() => {
     if (Object.values(tests).length > 0 && id) {
@@ -54,6 +65,22 @@ const TestDetail = props => {
     [dispatch, id]
   );
 
+  const handleKeyInTitleInput = React.useCallback(
+    event => {
+      if (event.keyCode === 13) {
+        handleEditTitle();
+      }
+      if (event.keyCode === 27) {
+        setEditTitle(false);
+      }
+    },
+    [handleEditTitle]
+  );
+
+  const handleEditTestName = React.useCallback(() => {
+    setEditTitle(!editTitle);
+  }, [editTitle]);
+
   const scrollToBottom = React.useCallback(() => {
     scrollToBottomRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [scrollToBottomRef]);
@@ -65,6 +92,10 @@ const TestDetail = props => {
   const scrollToTop = React.useCallback(() => {
     scrollToTopRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [scrollToTopRef]);
+
+  const handleTitleInputChange = React.useCallback(event => {
+    setTitle(event.target.value);
+  }, []);
 
   return (
     <div>
@@ -80,16 +111,30 @@ const TestDetail = props => {
       </Navbar>
       <div className={style.scroll}>
         <button className={style.up} onClick={scrollToTop}>
-          up
+          <img className={style.arrow_img} src={arrowUp} alt="up" />
         </button>
-        <button onClick={scrollToBottom}>down</button>
-      </div>
-      <div className={style.question_title}>
-        {tests[id] && tests[id].title}
-        <button className={style.title_edit}>
-          <img className={style.title_edit_img} src={edit} alt="edit" />
+        <button onClick={scrollToBottom}>
+          <img className={style.arrow_img} src={arrowDown} alt="down" />
         </button>
       </div>
+      <div className={style.test_title}>
+        <div onDoubleClick={handleEditTestName}>
+          {editTitle ? (
+            <input
+              className={style.edit_title}
+              value={title}
+              onChange={handleTitleInputChange}
+              onBlur={handleEditTitle}
+              onKeyDown={handleKeyInTitleInput}
+              type="text"
+              autoFocus
+            />
+          ) : (
+            tests[id] && tests[id].title
+          )}
+        </div>
+      </div>
+      <div className={style.title_message}>doubleclick title to rename</div>
       {tests[id] && tests[id].questions ? (
         <div className={style.questions}>{_renderQuestions}</div>
       ) : (
@@ -98,7 +143,12 @@ const TestDetail = props => {
       <div ref={scrollToBottomRef}>
         {createFormOpen ? (
           <div className={style.create}>
-            <button onClick={handleOpenCreateQuestion}>close</button>
+            <button
+              className={style.close_create}
+              onClick={handleOpenCreateQuestion}
+            >
+              <img className={style.close_img} src={close} alt="close" />
+            </button>
             <Formik
               initialValues={{
                 title: '',
@@ -119,7 +169,6 @@ const TestDetail = props => {
                     placeholder="question"
                     type="text"
                   />
-                  <ErrorMessage name="title" component="div" />
                   <Dropdown
                     questionType={values.question_type}
                     setFieldValue={setFieldValue}
@@ -132,7 +181,12 @@ const TestDetail = props => {
                       type="text"
                     />
                   )}
-                  <button type="submit">Create question</button>
+                  <button
+                    className={style.create_question_button}
+                    type="submit"
+                  >
+                    Create question
+                  </button>
                 </Form>
               )}
             </Formik>

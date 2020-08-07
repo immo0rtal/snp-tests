@@ -56,15 +56,15 @@ const authSlice = createSlice({
       state.isAdmin = payload.data.is_admin;
       state.login = true;
     },
-    checkCurrentUserFailed(state, { payload }) {
+    checkCurrentUserFailed(state) {
       state.initialLoading = false;
-      state.errorMessage = payload.err;
     },
     logoutUser(state) {
       state.initialLoading = true;
     },
     logoutUserSuccess(state) {
       state.login = false;
+      state.isAdmin = false;
       state.initialLoading = false;
     },
     logoutUserFailed(state, { payload }) {

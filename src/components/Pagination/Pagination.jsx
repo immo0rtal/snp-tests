@@ -17,7 +17,7 @@ const Pagination = () => {
   const handleChangePage = React.useCallback(
     event => {
       let page = testsPage;
-      if (event.target.dataset.direction === 'left') {
+      if (event.target.parentNode.dataset.direction === 'left') {
         page -= 1;
       } else {
         page += 1;

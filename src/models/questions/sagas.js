@@ -1,5 +1,10 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { postQuestion, removeQuestion, swapAnswers } from 'api/tests';
+import {
+  postQuestion,
+  removeQuestion,
+  swapAnswers,
+  patchQuestion,
+} from 'api/tests';
 
 import {
   createQuestion,
@@ -10,6 +15,9 @@ import {
   deleteQuestionFailed,
   changePosition,
   changePositionFailed,
+  editQuestion,
+  editQuestionSuccess,
+  editQuestionFailed,
 } from './slice';
 
 export function* createQuestionEffect(action) {
@@ -41,10 +49,21 @@ export function* swapAnswersEffect(action) {
   }
 }
 
+export function* editQuestionEffect(action) {
+  const { question } = action.payload;
+  try {
+    const response = yield call(patchQuestion, question);
+    yield put(editQuestionSuccess({ question: response.data }));
+  } catch (err) {
+    yield put(editQuestionFailed({ err: err.response.data }));
+  }
+}
+
 export default function*() {
   yield all([
     takeEvery(createQuestion, createQuestionEffect),
     takeEvery(deleteQuestion, deleteQuestionEffect),
     takeEvery(changePosition, swapAnswersEffect),
+    takeEvery(editQuestion, editQuestionEffect),
   ]);
 }

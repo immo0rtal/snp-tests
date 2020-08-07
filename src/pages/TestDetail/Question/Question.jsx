@@ -5,12 +5,17 @@ import PropTypes from 'prop-types';
 import Answer from './Answer';
 import deleteIcon from 'images/delete.png';
 import edit from 'images/edit.png';
-import { deleteQuestion, changePosition } from 'models/questions/slice';
+import {
+  deleteQuestion,
+  changePosition,
+  editQuestion,
+} from 'models/questions/slice';
 import Modal from 'components/Modal';
 import { createAnswer } from 'models/answers/slice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import close from 'images/close.jpg';
+import { checkValid } from 'utils/checkValid';
 
 const Question = props => {
   const { question, testId } = props;
@@ -20,25 +25,12 @@ const Question = props => {
   const [editMode, setEditMode] = React.useState(false);
   const [showMessage, setShowMessage] = React.useState(false);
   const [answerTitle, setAnswerTitle] = React.useState('');
-  const answers = useSelector(state => state.answers.answers);
-
-  const checkValid = React.useCallback(
-    queId => {
-      const que = questions[queId];
-      const ansersList = que.answers.map(idx => answers[idx]);
-      const count = ansersList.filter(el => el.is_right).length;
-
-      if (
-        (que.question_type !== 'number' && count < 1) ||
-        (que.question_type === 'single' && count > 1) ||
-        (que.question_type === 'multiple' && count < 2)
-      ) {
-        return false;
-      }
-      return true;
-    },
-    [questions, answers]
+  const [questionTitle, setQuestionTitle] = React.useState(
+    questions[question].title
   );
+  const [showEditTitle, setShowEditTitle] = React.useState(false);
+  const answers = useSelector(state => state.answers.answers);
+  const ref = React.useRef(null);
 
   const moveAnswer = React.useCallback(
     (dragIndex, hoverIndex, answerId) => {
@@ -73,7 +65,7 @@ const Question = props => {
       return editMode ? (
         <input value={questions[question].answer} />
       ) : (
-        questions[question].answer
+        <div className={style.number_answer}>{questions[question].answer}</div>
       );
     }
     return answersList.length > 0 ? (
@@ -105,32 +97,81 @@ const Question = props => {
 
   const handleEditQuestion = React.useCallback(() => {
     setEditMode(!editMode);
-    if (!checkValid(question)) {
+    if (!checkValid(question, questions, answers)) {
       setShowMessage(true);
     } else {
       setShowMessage(false);
     }
-  }, [editMode, checkValid, question]);
+  }, [editMode, question, answers, questions]);
 
   const handleAnswerChangeInput = React.useCallback(
     event => setAnswerTitle(event.target.value),
     []
   );
 
+  const handleEditQuestionTitle = React.useCallback(() => {
+    if (editMode) {
+      setShowEditTitle(!showEditTitle);
+    }
+  }, [showEditTitle, editMode]);
+
+  const handleEditQuestionTitleChange = React.useCallback(
+    event => setQuestionTitle(event.target.value),
+    []
+  );
+
+  const handleEditQuestionTitleBlur = React.useCallback(() => {
+    if (questionTitle) {
+      dispatch(
+        editQuestion({
+          question: { ...questions[question], title: questionTitle },
+        })
+      );
+    }
+    setShowEditTitle(false);
+  }, [dispatch, questions, questionTitle, question]);
+
+  const handleKeyInTitleInput = React.useCallback(
+    event => {
+      if (event.keyCode === 13) {
+        handleEditQuestionTitleBlur();
+      }
+      if (event.keyCode === 27) {
+        setShowEditTitle(false);
+      }
+    },
+    [handleEditQuestionTitleBlur]
+  );
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={style.question}>
+      <div
+        className={style.question}
+        ref={ref}
+        style={{
+          boxShadow: `${
+            showMessage ? '0 0 10px tomato' : '0 0 10px rgba(0, 0, 0, 0.1)'
+          }`,
+        }}
+      >
         <div className={style.title}>
-          {editMode ? (
-            <input value={questions[question].title} />
+          {showEditTitle ? (
+            <input
+              value={questionTitle}
+              onChange={handleEditQuestionTitleChange}
+              onBlur={handleEditQuestionTitleBlur}
+              onKeyDown={handleKeyInTitleInput}
+              type="text"
+              autoFocus
+            />
           ) : (
-            <>
-              <span>{questions[question].title}</span>
-              <span className={style.type}>
-                {questions[question].question_type}
-              </span>
-            </>
+            <span onDoubleClick={handleEditQuestionTitle}>
+              {questions[question].title}
+            </span>
           )}
+          <span className={style.type}>
+            {questions[question].question_type}
+          </span>
           <button onClick={handleToggleModal} className={style.delete}>
             <img className={style.delete_img} src={deleteIcon} alt="delete" />
           </button>
@@ -153,11 +194,20 @@ const Question = props => {
                 onChange={handleAnswerChangeInput}
                 placeholder="answer"
               />
-              <button onClick={handleAnswerCreate}>Create</button>
+              <button
+                className={style.create_button}
+                onClick={handleAnswerCreate}
+              >
+                Create
+              </button>
             </div>
           )}
         </div>
-        {showMessage && <div>this question is invalid</div>}
+        {showMessage && (
+          <div className={style.error}>
+            This question won`t appear during the test
+          </div>
+        )}
       </div>
       {showModal && (
         <Modal close={handleToggleModal}>

@@ -11,6 +11,8 @@ const Answer = props => {
   const { active, answer, questionId, moveAnswer, index } = props;
   const answers = useSelector(state => state.answers.answers);
   const [check, setCheck] = React.useState(answers[answer].is_right);
+  const [showEditTitle, setShoweEditTitle] = React.useState(false);
+  const [answerTitle, setAnswerTitle] = React.useState(answers[answer].text);
   const dispatch = useDispatch();
   const ref = React.useRef(null);
 
@@ -69,9 +71,43 @@ const Answer = props => {
   const handleCheckbocChange = React.useCallback(() => {
     setCheck(!check);
     dispatch(
-      changeAnswer({ id: answer, check: !check, text: answers[answer].text })
+      changeAnswer({ answer: { ...answers[answer], is_right: !check } })
     );
   }, [dispatch, check, answer, answers]);
+
+  const handleEditQuestionTitle = React.useCallback(() => {
+    if (!active) {
+      setShoweEditTitle(!showEditTitle);
+    }
+  }, [showEditTitle, active]);
+
+  const handleEditAnswerTitleChange = React.useCallback(
+    event => setAnswerTitle(event.target.value),
+    []
+  );
+
+  const handleEditAnswerTitleBlur = React.useCallback(() => {
+    if (answerTitle) {
+      dispatch(
+        changeAnswer({
+          answer: { ...answers[answer], text: answerTitle },
+        })
+      );
+    }
+    setShoweEditTitle(false);
+  }, [dispatch, answerTitle, answers, answer]);
+
+  const handleKeyInTitleInput = React.useCallback(
+    event => {
+      if (event.keyCode === 13) {
+        handleEditAnswerTitleBlur();
+      }
+      if (event.keyCode === 27) {
+        setShoweEditTitle(false);
+      }
+    },
+    [handleEditAnswerTitleBlur]
+  );
 
   return (
     <div className={style.answer} ref={ref} style={{ opacity }}>
@@ -80,7 +116,19 @@ const Answer = props => {
         onChange={handleCheckbocChange}
         checked={check}
       />
-      <span className={style.text}>{answers[answer].text}</span>
+      <span className={style.text} onDoubleClick={handleEditQuestionTitle}>
+        {showEditTitle ? (
+          <input
+            value={answerTitle}
+            onChange={handleEditAnswerTitleChange}
+            onBlur={handleEditAnswerTitleBlur}
+            onKeyDown={handleKeyInTitleInput}
+            autoFocus
+          />
+        ) : (
+          answers[answer].text
+        )}
+      </span>
       {!active && (
         <button className={style.close} onClick={handleDeleteAnswer}>
           <img className={style.close_img} src={close} alt="" />

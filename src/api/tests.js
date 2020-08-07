@@ -20,9 +20,9 @@ export const removeTest = id =>
     id,
   });
 
-export const patchTest = data =>
+export const patchTest = (id, data) =>
   Req.PATCH({
-    url: `/tests/${data.id}`,
+    url: `/tests/${id}`,
     data,
   });
 
@@ -36,6 +36,12 @@ export const removeQuestion = id =>
   Req.DELETE({
     url: `/questions/${id}`,
     id,
+  });
+
+export const patchQuestion = data =>
+  Req.PATCH({
+    url: `/questions/${data.id}`,
+    data,
   });
 
 export const postAnswer = (data, id) =>

@@ -15,12 +15,9 @@ const answersSlice = createSlice({
     createAnswer(state) {
       state.loading = true;
     },
-    createAnswerSuccess(state, { payload }) {
+    createAnswerSuccess(state, { payload: { answer } }) {
       state.loading = false;
-      state.answers = {
-        ...state.answers,
-        [payload.answer.id]: payload.answer,
-      };
+      state.answers[answer.id] = answer;
     },
     createAnswerFailed(state, { payload }) {
       state.loading = false;
@@ -39,9 +36,9 @@ const answersSlice = createSlice({
     changeAnswer(state) {
       state.loading = true;
     },
-    changeAnswerSuccess(state, { payload: { id, check } }) {
+    changeAnswerSuccess(state, { payload: { answer } }) {
       state.loading = false;
-      state.answers[id].is_right = check;
+      state.answers[answer.id] = answer;
     },
     changeAnswerFailed(state, { payload }) {
       state.loading = false;

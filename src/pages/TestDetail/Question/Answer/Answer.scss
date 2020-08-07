@@ -1,8 +1,10 @@
 .answer {
+  height: 17px;
   font-family: 'Roboto', sans-serif;
-  margin-top: 8px;
+  margin-top: 7px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .text {
@@ -10,7 +12,10 @@
 }
 
 .close_img {
-  max-width: 18px;
+  max-width: 14px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .close {

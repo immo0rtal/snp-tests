@@ -36,15 +36,10 @@ export function* deleteAnswerEffect(action) {
 }
 
 export function* changeAnswerEffect(action) {
-  const { check, text } = action.payload;
+  const { answer } = action.payload;
   try {
-    const response = yield call(patchAnswer, {
-      is_right: check,
-      id: action.payload.id,
-      text,
-    });
-    const { id, is_right: isRight } = response.data;
-    yield put(changeAnswerSuccess({ id, check: isRight }));
+    const response = yield call(patchAnswer, answer);
+    yield put(changeAnswerSuccess({ answer: response.data }));
   } catch (err) {
     yield put(changeAnswerFailed({ err: err.response.data }));
   }
