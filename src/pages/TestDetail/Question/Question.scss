@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .question {
   background: white;
   border-radius: 15px;
@@ -8,6 +10,10 @@
   width: 700px;
   margin-top: 30px;
   position: relative;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .answers {
@@ -20,6 +26,10 @@
   font-size: 20px;
   display: flex;
   align-items: center;
+
+  @include mobileL {
+    font-size: 16px;
+  }
 }
 
 .warning {

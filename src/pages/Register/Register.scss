@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .title {
   font-size: 25px;
   color: $color-dark;
@@ -16,6 +18,10 @@
   flex-direction: column;
   transition: width 0.8s;
   margin: 0 auto;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .input {
@@ -25,6 +31,10 @@
   padding: 10px;
   color: $color-lighttext;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .submit {
@@ -71,11 +81,19 @@
   font-size: 23px;
   margin-bottom: 40px;
   color: $color-lighttext;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .signup_wrapper {
   width: 500px;
   margin: 40px auto;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .error {

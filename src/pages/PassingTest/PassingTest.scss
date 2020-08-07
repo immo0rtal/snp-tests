@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .back {
   max-width: 40px;
 }
@@ -7,6 +9,10 @@
 .wrapper {
   margin: 0 auto;
   width: 700px;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .test_title {
@@ -38,6 +44,10 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .user {
@@ -48,6 +58,10 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .footer {
@@ -92,6 +106,10 @@
   color: $color-dark;
   margin-left: 10px;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .finish_test {

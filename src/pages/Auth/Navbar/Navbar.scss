@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .header {
   height: 60px;
   background: white;
@@ -15,6 +17,10 @@
   font-size: 25px;
   color: $color-dark;
   margin-left: 50px;
+
+  @include mobileL {
+    margin-left: 20px;
+  }
 }
 
 .logout {
@@ -26,12 +32,21 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 450;
   margin-right: 60px;
+
+  @include mobileL {
+    margin-right: 20px;
+    font-size: 13px;
+  }
 }
 
 .text {
   font-size: 18px;
   color: $color-dark;
   margin-right: 30px;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .register {

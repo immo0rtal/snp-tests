@@ -1,6 +1,12 @@
+@import 'styles/breakpoints.scss';
+
 .list {
   margin: 0 auto;
   width: 700px;
   display: flex;
   flex-direction: column;
+
+  @include mobileL {
+    width: 97%;
+  }
 }

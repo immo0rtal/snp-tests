@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .test {
   background: white;
   padding: 20px;
@@ -11,14 +13,27 @@
   justify-content: space-between;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
+
+  @include mobileL {
+    padding: 15px;
+    font-size: 12px;
+  }
 }
 
 .edit {
   max-width: 35px;
+
+  @include mobileL {
+    max-width: 25px;
+  }
 }
 
 .delete {
   max-width: 35px;
+
+  @include mobileL {
+    max-width: 25px;
+  }
 }
 
 .delete_button {
@@ -31,6 +46,10 @@
   right: 10px;
   display: flex;
   align-items: center;
+
+  @include mobileL {
+    top: 31px;
+  }
 }
 
 .edit_button {

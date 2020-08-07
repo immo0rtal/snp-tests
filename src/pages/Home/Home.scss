@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .loader {
   margin: 5% auto;
   max-width: 200px;
@@ -15,6 +17,11 @@
   padding: 10px;
   justify-content: space-between;
   position: relative;
+
+  @include mobileL {
+    height: auto;
+    flex-direction: column;
+  }
 }
 
 .title {
@@ -22,6 +29,10 @@
   color: $color-dark;
   margin-left: 50px;
   font-family: 'Roboto', sans-serif;
+
+  @include laptop {
+    display: none;
+  }
 }
 
 .logout {
@@ -33,6 +44,10 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 450;
   margin-right: 60px;
+
+  @include laptop {
+    margin-right: 10px;
+  }
 }
 
 .info {
@@ -49,6 +64,23 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include laptop {
+    margin-left: 25px;
+  }
+
+  @include mobileL {
+    display: none;
+  }
+}
+
+.header_buttons {
+  @include mobileL {
+    margin-top: 20px;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .user {
@@ -59,6 +91,10 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include laptop {
+    display: none;
+  }
 }
 
 .create {
@@ -83,6 +119,10 @@
 .wrapper {
   position: absolute;
   left: 43%;
+
+  @include laptop {
+    position: unset;
+  }
 }
 
 .message {

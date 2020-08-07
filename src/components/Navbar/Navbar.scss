@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .header {
   height: 60px;
   background: white;
@@ -10,6 +12,11 @@
   padding: 10px;
   justify-content: space-between;
   position: relative;
+
+  @include mobileL {
+    height: auto;
+    flex-direction: column;
+  }
 }
 
 .title {

@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .content {
   margin-top: 2%;
   display: flex;
@@ -39,6 +41,10 @@
 
 .signin_wrapper {
   width: 500px;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .signup_wrapper {

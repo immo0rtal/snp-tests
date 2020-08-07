@@ -117,7 +117,7 @@ const Home = () => {
                 placeholder="Search"
               />
             </div>
-            <div>
+            <div className={style.header_buttons}>
               {isAdmin && (
                 <button onClick={handleToggleModal} className={style.create}>
                   Create Test

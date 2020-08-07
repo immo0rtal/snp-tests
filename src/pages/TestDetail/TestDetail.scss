@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .arrow {
   min-width: 40px;
   max-width: 40px;
@@ -19,6 +21,10 @@
   width: 700px;
   background: white;
   position: relative;
+
+  @include mobileL {
+    width: 98%;
+  }
 }
 
 .close_create {
@@ -35,6 +41,10 @@
 
 .form {
   display: flex;
+
+  @include mobileL {
+    flex-direction: column;
+  }
 }
 
 .username {
@@ -45,6 +55,10 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    margin-left: 20px;
+  }
 }
 
 .user {
@@ -55,6 +69,10 @@
   padding: 10px;
   border-radius: 15px;
   font-family: 'Roboto', sans-serif;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .add_wrapper {
@@ -101,6 +119,10 @@
   align-items: center;
   height: 100vh;
   width: 50px;
+
+  @include mobileL {
+    display: none;
+  }
 }
 
 .up {
@@ -110,6 +132,10 @@
 .title {
   display: flex;
   align-items: center;
+
+  @include mobileL {
+    width: 100%;
+  }
 }
 
 .plus {

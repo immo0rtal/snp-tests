@@ -1,5 +1,7 @@
 @use '~styles/variables' as *;
 
+@import 'styles/breakpoints.scss';
+
 .pagination {
   background: white;
   border-radius: 15px;
@@ -9,6 +11,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include mobileL {
+    padding: 10px;
+  }
 }
 
 .button_img {
@@ -18,6 +24,10 @@
   padding: 17px;
   display: flex;
   align-items: center;
+
+  @include mobileL {
+    padding: 12px;
+  }
 }
 
 .button {
