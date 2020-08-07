@@ -8,17 +8,21 @@ import arrow from 'images/arrow.jpg';
 import style from './PassingTest.scss';
 import Modal from 'components/Modal';
 import { checkValid } from 'utils/checkValid';
+import { loginSelector, dataSelector } from 'models/authentication/selectors';
+import { questionsSelector } from 'models/questions/selectors';
+import { answersSelector } from 'models/answers/selectors';
+import { testsSelector } from 'models/tests/selectors';
 
 const PassingTest = props => {
   const { id } = props.match.params;
-  const tests = useSelector(state => state.tests.tests);
-  const questions = useSelector(state => state.questions.questions);
-  const answers = useSelector(state => state.answers.answers);
+  const tests = useSelector(testsSelector);
+  const questions = useSelector(questionsSelector);
+  const answers = useSelector(answersSelector);
   const history = useHistory();
-  const login = useSelector(state => state.auth.login);
+  const login = useSelector(loginSelector);
   const [result, setResult] = React.useState(null);
   const [showModal, setShowModal] = React.useState(false);
-  const data = useSelector(state => state.auth.data);
+  const data = useSelector(dataSelector);
 
   const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
     showModal,
@@ -98,6 +102,24 @@ const PassingTest = props => {
     return null;
   }, [validQuestions, result]);
 
+  const _renderQuestions = React.useMemo(() => {
+    if (tests[id] && tests[id].questions.length > 0) {
+      if (validQuestions.length < 1) {
+        return (
+          <div className={style.no_questions}>
+            Test don`t include valid questions. Users won`t see it
+          </div>
+        );
+      }
+      return questionsList;
+    }
+    return (
+      <div className={style.no_questions}>
+        Test is empty. Users won`t see it
+      </div>
+    );
+  }, [tests, id, validQuestions, questionsList]);
+
   return (
     <div>
       <Navbar>
@@ -114,13 +136,7 @@ const PassingTest = props => {
         </button>
       </Navbar>
       <div className={style.test_title}>{tests[id] && tests[id].title}</div>
-      <div className={style.wrapper}>
-        {tests[id] && tests[id].questions.length > 0 ? (
-          questionsList
-        ) : (
-          <div className={style.no_questions}>Test is empty</div>
-        )}
-      </div>
+      <div className={style.wrapper}>{_renderQuestions}</div>
       <div className={style.footer} />
       {showModal && (
         <Modal disable>

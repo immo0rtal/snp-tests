@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import style from './Question.scss';
 import Answer from './Answer';
 import PropTypes from 'prop-types';
+import { questionsSelector } from 'models/questions/selectors';
+import { answersSelector } from 'models/answers/selectors';
 
 const Question = props => {
   const { question, change } = props;
-  const questions = useSelector(state => state.questions.questions);
-  const answers = useSelector(state => state.answers.answers);
+  const questions = useSelector(questionsSelector);
+  const answers = useSelector(answersSelector);
   const [text, setText] = React.useState('');
 
   const answersObj = React.useMemo(

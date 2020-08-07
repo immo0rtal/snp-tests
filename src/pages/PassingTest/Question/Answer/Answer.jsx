@@ -4,6 +4,7 @@ import Radio from 'components/Radio';
 import Checkbox from 'components/Checkbox';
 import style from './Answer.scss';
 import PropTypes from 'prop-types';
+import { answersSelector } from 'models/answers/selectors';
 
 const Answer = props => {
   const {
@@ -16,7 +17,7 @@ const Answer = props => {
     addAnswerRadio,
   } = props;
 
-  const answers = useSelector(state => state.answers.answers);
+  const answers = useSelector(answersSelector);
   const [value, setValue] = React.useState(false);
 
   const handleCheckboxChange = React.useCallback(() => {

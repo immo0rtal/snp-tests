@@ -36,3 +36,13 @@ export const usersSelector = createSelector(
   state => state.auth.users,
   users => users
 );
+
+export const errorSelector = createSelector(
+  state => state.auth.errorMessage,
+  err => err
+);
+
+export const isAdminSelector = createSelector(
+  state => state.auth.isAdmin,
+  isAdmin => isAdmin
+);

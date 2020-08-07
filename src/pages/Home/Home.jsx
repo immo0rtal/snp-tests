@@ -7,11 +7,12 @@ import {
 } from 'models/authentication/slice';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { infoSelector } from 'models/tests/selectors';
+import { infoSelector, testsByIdSelector } from 'models/tests/selectors';
 import {
   loginSelector,
   initialLoadingSelector,
   dataSelector,
+  isAdminSelector,
 } from 'models/authentication/selectors';
 import loader from 'images/loader.gif';
 import style from './Home.scss';
@@ -31,8 +32,8 @@ const Home = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const [text, setText] = React.useState('');
   const infoDebounce = useDebounce(info, 400);
-  const isAdmin = useSelector(state => state.auth.isAdmin);
-  const testsById = useSelector(state => state.tests.testsById);
+  const isAdmin = useSelector(isAdminSelector);
+  const testsById = useSelector(testsByIdSelector);
 
   const handleLogout = React.useCallback(() => {
     dispatch(logoutUser());

@@ -50,6 +50,7 @@ const questionsSlice = createSlice({
     editQuestionSuccess(state, { payload: { question } }) {
       state.loading = false;
       state.questions[question.id].title = question.title;
+      state.questions[question.id].answer = question.answer;
     },
     editQuestionFailed(state, { payload }) {
       state.loading = false;

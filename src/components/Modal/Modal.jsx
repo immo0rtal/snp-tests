@@ -21,11 +21,13 @@ const Modal = props => {
       }
     };
 
+    document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'unset';
     };
   }, [close, ref, disable]);
 

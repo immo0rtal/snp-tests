@@ -63,6 +63,8 @@
 
 .modal_results {
   margin-top: 10px;
+  max-height: 200px;
+  overflow: auto;
 }
 
 .modal_buttons {

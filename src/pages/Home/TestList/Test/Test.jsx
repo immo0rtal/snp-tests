@@ -5,8 +5,10 @@ import { useHistory } from 'react-router-dom';
 import edit from 'images/edit.png';
 import deleteIcon from 'images/delete.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTest, getTests } from 'models/tests/slice';
+import { deleteTest } from 'models/tests/slice';
 import Modal from 'components/Modal';
+import { isAdminSelector } from 'models/authentication/selectors';
+import { infoSelector, testsByIdSelector } from 'models/tests/selectors';
 
 const Test = props => {
   const dispatch = useDispatch();
@@ -14,21 +16,18 @@ const Test = props => {
   const { id, title, created_at: createdAt } = props.data;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [showOpenTestModal, setShowOpenTestModal] = React.useState(false);
-  const isAdmin = useSelector(state => state.auth.isAdmin);
-  const info = useSelector(state => state.tests.info);
-  const tetsByid = useSelector(state => state.tests.testsById);
+  const isAdmin = useSelector(isAdminSelector);
+  const info = useSelector(infoSelector);
+  const testsById = useSelector(testsByIdSelector);
 
   const handleEdit = React.useCallback(() => {
     history.push(`/test/${id}`);
   }, [history, id]);
 
   const handleDelete = React.useCallback(() => {
-    dispatch(deleteTest({ id }));
+    dispatch(deleteTest({ id, length: testsById.length, info }));
     setShowDeleteModal(false);
-    if (tetsByid.length > 6) {
-      dispatch(getTests({ info }));
-    }
-  }, [dispatch, id, info, tetsByid]);
+  }, [dispatch, id, info, testsById]);
 
   const handleDeleteModal = React.useCallback(
     () => setShowDeleteModal(!showDeleteModal),

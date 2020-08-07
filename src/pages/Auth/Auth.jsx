@@ -4,9 +4,10 @@ import Login from './Login';
 import Navbar from './Navbar';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteError } from 'models/authentication/slice';
+import { errorSelector } from 'models/authentication/selectors';
 
 const Auth = () => {
-  const error = useSelector(state => state.auth.errorMessage);
+  const error = useSelector(errorSelector);
   const dispatch = useDispatch();
 
   const handleCloseError = React.useCallback(() => {

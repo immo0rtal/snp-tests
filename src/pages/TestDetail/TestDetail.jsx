@@ -6,7 +6,11 @@ import arrow from 'images/arrow.jpg';
 import PropTypes from 'prop-types';
 import Navbar from 'components/Navbar';
 import Question from './Question';
-import { loginSelector } from 'models/authentication/selectors';
+import {
+  loginSelector,
+  dataSelector,
+  isAdminSelector,
+} from 'models/authentication/selectors';
 import Dropdown from 'components/Dropdown';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -16,6 +20,7 @@ import arrowUp from 'images/arrowUp.png';
 import arrowDown from 'images/arrowDown.png';
 import close from 'images/close.jpg';
 import { editTest } from 'models/tests/slice';
+import { testsSelector } from 'models/tests/selectors';
 
 const TestDetail = props => {
   const login = useSelector(loginSelector);
@@ -25,10 +30,10 @@ const TestDetail = props => {
   const [createFormOpen, setCreateFormOpen] = React.useState(false);
   const scrollToBottomRef = React.useRef(null);
   const scrollToTopRef = React.useRef(null);
-  const data = useSelector(state => state.auth.data);
-  const isAdmin = useSelector(state => state.auth.isAdmin);
+  const data = useSelector(dataSelector);
+  const isAdmin = useSelector(isAdminSelector);
   const [editTitle, setEditTitle] = React.useState(false);
-  const tests = useSelector(state => state.tests.tests);
+  const tests = useSelector(testsSelector);
   const [title, setTitle] = React.useState(tests[id] && tests[id].title);
 
   React.useEffect(() => {

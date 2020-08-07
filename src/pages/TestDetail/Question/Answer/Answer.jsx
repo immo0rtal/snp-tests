@@ -6,10 +6,11 @@ import Checkbox from 'components/Checkbox';
 import close from 'images/close.jpg';
 import { deleteAnswer, changeAnswer } from 'models/answers/slice';
 import { useDrop, useDrag } from 'react-dnd';
+import { answersSelector } from 'models/answers/selectors';
 
 const Answer = props => {
   const { active, answer, questionId, moveAnswer, index } = props;
-  const answers = useSelector(state => state.answers.answers);
+  const answers = useSelector(answersSelector);
   const [check, setCheck] = React.useState(answers[answer].is_right);
   const [showEditTitle, setShoweEditTitle] = React.useState(false);
   const [answerTitle, setAnswerTitle] = React.useState(answers[answer].text);

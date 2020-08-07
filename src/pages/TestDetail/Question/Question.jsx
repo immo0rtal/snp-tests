@@ -16,20 +16,25 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import close from 'images/close.jpg';
 import { checkValid } from 'utils/checkValid';
+import { questionsSelector } from 'models/questions/selectors';
+import { answersSelector } from 'models/answers/selectors';
 
 const Question = props => {
   const { question, testId } = props;
-  const questions = useSelector(state => state.questions.questions);
+  const questions = useSelector(questionsSelector);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [showMessage, setShowMessage] = React.useState(false);
+  const [questionAnswer, setQuestionAnswer] = React.useState(
+    questions[question].answer
+  );
   const [answerTitle, setAnswerTitle] = React.useState('');
   const [questionTitle, setQuestionTitle] = React.useState(
     questions[question].title
   );
   const [showEditTitle, setShowEditTitle] = React.useState(false);
-  const answers = useSelector(state => state.answers.answers);
+  const answers = useSelector(answersSelector);
   const ref = React.useRef(null);
 
   const moveAnswer = React.useCallback(
@@ -45,6 +50,22 @@ const Question = props => {
     },
     [dispatch, question]
   );
+
+  const handleQuestioAnswerChange = React.useCallback(
+    event => setQuestionAnswer(event.target.value),
+    []
+  );
+
+  const handleQuestioAnswerClick = React.useCallback(() => {
+    if (questionAnswer) {
+      dispatch(
+        editQuestion({
+          question: { ...questions[question], answer: questionAnswer },
+        })
+      );
+    }
+    setEditMode(false);
+  }, [questions, dispatch, question, questionAnswer]);
 
   const answersList = React.useMemo(() => {
     return questions[question].answers.map((answer, index) => (
@@ -63,7 +84,19 @@ const Question = props => {
   const _renderAnswers = React.useMemo(() => {
     if (questions[question].question_type === 'number') {
       return editMode ? (
-        <input value={questions[question].answer} />
+        <>
+          <input
+            onChange={handleQuestioAnswerChange}
+            className={style.question_answer}
+            value={questionAnswer}
+          />
+          <button
+            className={style.create_button}
+            onClick={handleQuestioAnswerClick}
+          >
+            Change
+          </button>
+        </>
       ) : (
         <div className={style.number_answer}>{questions[question].answer}</div>
       );
@@ -75,7 +108,15 @@ const Question = props => {
         No answers. This question won`t appear during the test
       </div>
     );
-  }, [questions, question, answersList, editMode]);
+  }, [
+    questions,
+    question,
+    answersList,
+    editMode,
+    handleQuestioAnswerChange,
+    handleQuestioAnswerClick,
+    questionAnswer,
+  ]);
 
   const handleQuestionDelete = React.useCallback(() => {
     dispatch(deleteQuestion({ questionId: question, testId }));
@@ -203,7 +244,7 @@ const Question = props => {
             </div>
           )}
         </div>
-        {showMessage && (
+        {showMessage && questions[question].answers.length > 0 && (
           <div className={style.error}>
             This question won`t appear during the test
           </div>

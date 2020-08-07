@@ -14,3 +14,8 @@ export const loadingSelector = createSelector(
   state => state.tests.loading,
   loading => loading
 );
+
+export const testsByIdSelector = createSelector(
+  state => state.tests.testsById,
+  byId => byId
+);

@@ -56,10 +56,13 @@ export function* createTestEffect(action) {
 }
 
 export function* deleteTestEffect(action) {
-  const { id } = action.payload;
+  const { id, info, length } = action.payload;
   try {
     yield call(removeTest, id);
     yield put(deleteTestSuccess({ id }));
+    if (length > 6) {
+      yield put(getTests({ info }));
+    }
   } catch (err) {
     yield put(deleteTestFailed({ err: err.response.data }));
   }
