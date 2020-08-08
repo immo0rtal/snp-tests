@@ -45,7 +45,9 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/label-has-for': 'off',
     'jsx-a11y/label-has-associated-control': 'on',
+    'jsx-a11y/no-autofocus': 'off',
     'react/forbid-prop-types': 'off',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'prettier/prettier': [
       'error',
       {

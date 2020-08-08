@@ -50,6 +50,7 @@ const Answer = props => {
       }
 
       moveAnswer(dragIndex, hoverIndex, answer);
+      /* eslint-disable no-param-reassign */
       item.index = hoverIndex;
     },
   });

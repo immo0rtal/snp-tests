@@ -88,7 +88,8 @@ const PassingTest = props => {
     if (result) {
       return validQuestions.map((question, index) => (
         <div className={style.result_wrapper} key={question * 3}>
-          <div>{index + 1 + ')'}</div>
+          <div>{index + 1}</div>
+          <span>)</span>
           <div className={style.answer_result}>
             {result[question] ? (
               <div className={style.right}>right</div>

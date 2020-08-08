@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 const Dropdown = props => {
   const { questionType, setFieldValue } = props;
   const [open, setOpen] = React.useState(false);
-  const types = ['single', 'multiple', 'number'];
+  const types = [
+    { id: 1, title: 'single' },
+    { id: 2, title: 'multiple' },
+    { id: 3, title: 'number' },
+  ];
   const [value, setValue] = React.useState(questionType);
   const ref = React.useRef(null);
 
@@ -43,14 +47,14 @@ const Dropdown = props => {
         </div>
         <ul className={style.list}>
           {open &&
-            types.map((type, index) => (
+            types.map(type => (
               <li
-                data-type={type}
+                data-type={type.title}
                 onClick={handleOnClick}
-                key={index}
+                key={type.id}
                 className={style.item}
               >
-                {type}
+                {type.title}
               </li>
             ))}
         </ul>

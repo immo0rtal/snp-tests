@@ -1,4 +1,5 @@
 {
+  "homepage": "http://ISA002.github.io/snp-tests",
   "name": "react-starter-boilerplate",
   "version": "2.3.1",
   "description": "A starter boilerplate for an universal web application with the best development experience and best practices.",
@@ -29,6 +30,8 @@
   ],
   "license": "MIT",
   "scripts": {
+    "predeploy": "yarn build:assets:production",
+    "deploy": "gh-pages -d public",
     "dev": "yarn clean:build && yarn dev:manifest && yarn copy:public && better-npm-run dev",
     "dev:spa": "yarn clean:build && yarn dev:manifest && yarn copy:public && yarn render:index && better-npm-run dev:spa",
     "start:staging": "yarn build:assets:staging && yarn build:server:staging && yarn run:staging",
@@ -216,6 +219,7 @@
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^8.1.0",
+    "gh-pages": "^3.1.0",
     "imagemin-webpack-plugin": "^2.1.1",
     "mini-css-extract-plugin": "^0.5.0",
     "opn": "^5.3.0",

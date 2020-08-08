@@ -135,7 +135,7 @@ const TestDetail = props => {
               autoFocus
             />
           ) : (
-            tests[id] && tests[id].title
+            <div>{tests[id] && tests[id].title}</div>
           )}
         </div>
       </div>
