@@ -29,6 +29,7 @@ import {
 import loader from 'images/loader.gif';
 import loaderTests from 'images/loader2.gif';
 import { questionsLoadingSelector } from 'models/questions/selectors';
+import { Helmet } from 'react-helmet';
 
 const TestDetail = props => {
   const login = useSelector(loginSelector);
@@ -128,6 +129,9 @@ const TestDetail = props => {
 
   return (
     <>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
       {initialLoading ? (
         <div className={style.loader}>
           <img src={loader} alt="Loading..." />
@@ -289,10 +293,12 @@ const TestDetail = props => {
 
 TestDetail.propTypes = {
   match: PropTypes.any,
+  title: PropTypes.string,
 };
 
 TestDetail.defaultProps = {
   match: {},
+  title: 'React App',
 };
 
 export default React.memo(TestDetail);

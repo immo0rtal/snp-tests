@@ -23,6 +23,7 @@ import {
 import { getTests } from 'models/tests/slice';
 import loader from 'images/loader.gif';
 import loaderTests from 'images/loader2.gif';
+import { Helmet } from 'react-helmet';
 
 const PassingTest = props => {
   const dispatch = useDispatch();
@@ -138,6 +139,9 @@ const PassingTest = props => {
 
   return (
     <>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
       {initialLoading ? (
         <div className={style.loader}>
           <img src={loader} alt="Loading..." />
@@ -195,10 +199,12 @@ const PassingTest = props => {
 
 PassingTest.propTypes = {
   match: PropTypes.any,
+  title: PropTypes.string,
 };
 
 PassingTest.defaultProps = {
   match: {},
+  title: 'React App',
 };
 
 export default React.memo(PassingTest);

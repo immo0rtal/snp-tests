@@ -20,8 +20,10 @@ import Pagination from 'components/Pagination';
 import { useDebounce } from 'hooks/useDebounce';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
-const Home = () => {
+const Home = props => {
   const dispatch = useDispatch();
   const login = useSelector(loginSelector);
   const initialLoading = useSelector(initialLoadingSelector);
@@ -86,6 +88,9 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
       {initialLoading ? (
         <div className={style.loader}>
           <img src={loader} alt="Loading..." />
@@ -184,6 +189,14 @@ const Home = () => {
       )}
     </>
   );
+};
+
+Home.propTypes = {
+  title: PropTypes.string,
+};
+
+Home.defaultProps = {
+  title: 'React App',
 };
 
 export default React.memo(Home);

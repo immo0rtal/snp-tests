@@ -6,12 +6,12 @@ import NotFound from 'pages/NotFound';
 
 const Router = ({ routes }) => (
   <Switch>
-    {routes.map(({ path, exact, component: Component }) => (
+    {routes.map(({ path, exact, component: Component, title }) => (
       <Route
         key={path}
         exact={exact}
         path={path}
-        render={props => <Component {...props} />}
+        render={props => <Component {...props} title={title} />}
       />
     ))}
     <Route path="*" exact component={NotFound} />

@@ -6,8 +6,10 @@ import { deleteError } from 'models/authentication/slice';
 import { errorSelector } from 'models/authentication/selectors';
 import Navbar from 'components/Navbar';
 import { useHistory } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
-const Auth = () => {
+const Auth = props => {
   const error = useSelector(errorSelector);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -22,6 +24,9 @@ const Auth = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
       <Navbar>
         <h1 className={style.title}>TestsApp</h1>
         <div className={style.register}>
@@ -47,6 +52,14 @@ const Auth = () => {
       </div>
     </>
   );
+};
+
+Auth.propTypes = {
+  title: PropTypes.string,
+};
+
+Auth.defaultProps = {
+  title: 'React App',
 };
 
 export default React.memo(Auth);
