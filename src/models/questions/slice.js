@@ -13,18 +13,19 @@ const questionsSlice = createSlice({
   initialState: {
     questions: {},
     loading: false,
+    loader: false,
     errorMessage: null,
   },
   reducers: {
     createQuestion(state) {
-      state.loading = true;
+      state.loader = true;
     },
     createQuestionSuccess(state, { payload: { question } }) {
-      state.loading = false;
+      state.loader = false;
       state.questions[question.id] = question;
     },
     createQuestionFailed(state, { payload }) {
-      state.loading = false;
+      state.loader = false;
       state.errorMessage = payload.err;
     },
     deleteQuestion(state) {

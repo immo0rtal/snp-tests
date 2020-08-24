@@ -27,7 +27,11 @@ export function* registerUserEffect(action) {
     const response = yield call(fetchUserRegister, data);
     yield put(registerUserSuccess({ response: response.data }));
   } catch (err) {
-    yield put(registerUserFailed({ err: err.response.data }));
+    if (err.response) {
+      yield put(registerUserFailed({ err: err.response.data }));
+    } else {
+      yield put(registerUserFailed({ err: { error: 'you are offline' } }));
+    }
   }
 }
 
@@ -37,7 +41,11 @@ export function* loginUserEffect(action) {
     const response = yield call(fetchUserLogin, data);
     yield put(loginUserSuccess({ response: response.data }));
   } catch (err) {
-    yield put(loginUserFailed({ err: err.response.data }));
+    if (err.response) {
+      yield put(loginUserFailed({ err: err.response.data }));
+    } else {
+      yield put(loginUserFailed({ err: { error: 'you are offline' } }));
+    }
   }
 }
 

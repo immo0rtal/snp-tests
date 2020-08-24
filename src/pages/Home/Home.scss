@@ -168,3 +168,22 @@
   background: $color-lightgray;
   color: $color-blue;
 }
+
+.create_loader {
+  position: absolute;
+  max-width: 150px;
+  left: 18%;
+}
+
+.form_wrapper {
+  position: relative;
+}
+
+.title_error {
+  position: absolute;
+  color: red;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  bottom: -25px;
+  left: 42px;
+}

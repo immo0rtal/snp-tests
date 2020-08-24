@@ -18,6 +18,8 @@ import close from 'images/close.jpg';
 import { checkValid } from 'utils/checkValid';
 import { questionsSelector } from 'models/questions/selectors';
 import { answersSelector } from 'models/answers/selectors';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 const Question = props => {
   const { question, testId } = props;
@@ -25,10 +27,10 @@ const Question = props => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
-  const [showMessage, setShowMessage] = React.useState(false);
-  const [questionAnswer, setQuestionAnswer] = React.useState(
-    questions[question].answer
-  );
+  const [showMessage, setShowMessage] = React.useState({
+    show: false,
+    message: null,
+  });
   const [answerTitle, setAnswerTitle] = React.useState('');
   const [questionTitle, setQuestionTitle] = React.useState(
     questions[question].title
@@ -51,21 +53,17 @@ const Question = props => {
     [dispatch, question]
   );
 
-  const handleQuestioAnswerChange = React.useCallback(
-    event => setQuestionAnswer(event.target.value),
-    []
-  );
-
-  const handleQuestioAnswerClick = React.useCallback(() => {
-    if (questionAnswer) {
+  const handleQuestioAnswerClick = React.useCallback(
+    values => {
       dispatch(
         editQuestion({
-          question: { ...questions[question], answer: questionAnswer },
+          question: { ...questions[question], answer: values.answer },
         })
       );
-    }
-    setEditMode(false);
-  }, [questions, dispatch, question, questionAnswer]);
+      setEditMode(false);
+    },
+    [questions, dispatch, question]
+  );
 
   const answersList = React.useMemo(() => {
     return questions[question].answers.map((answer, index) => (
@@ -85,17 +83,27 @@ const Question = props => {
     if (questions[question].question_type === 'number') {
       return editMode ? (
         <>
-          <input
-            onChange={handleQuestioAnswerChange}
-            className={style.question_answer}
-            value={questionAnswer}
-          />
-          <button
-            className={style.create_button}
-            onClick={handleQuestioAnswerClick}
+          <Formik
+            initialValues={{
+              answer: questions[question].answer,
+            }}
+            validationSchema={Yup.object().shape({
+              answer: Yup.number().required(),
+            })}
+            onSubmit={handleQuestioAnswerClick}
           >
-            Change
-          </button>
+            <Form>
+              <Field
+                className={style.question_answer}
+                name="answer"
+                placeholder="answer"
+                type="text"
+              />
+              <button className={style.create_button} type="submit">
+                Change
+              </button>
+            </Form>
+          </Formik>
         </>
       ) : (
         <div className={style.number_answer}>{questions[question].answer}</div>
@@ -108,29 +116,32 @@ const Question = props => {
         No answers. This question won`t appear during the test
       </div>
     );
-  }, [
-    questions,
-    question,
-    answersList,
-    editMode,
-    handleQuestioAnswerChange,
-    handleQuestioAnswerClick,
-    questionAnswer,
-  ]);
+  }, [questions, question, answersList, editMode, handleQuestioAnswerClick]);
 
   const handleQuestionDelete = React.useCallback(() => {
     dispatch(deleteQuestion({ questionId: question, testId }));
   }, [dispatch, question, testId]);
 
   const handleAnswerCreate = React.useCallback(() => {
-    dispatch(
-      createAnswer({
-        id: question,
-        data: { text: answerTitle, is_right: false },
-      })
-    );
+    if (answerTitle) {
+      dispatch(
+        createAnswer({
+          id: question,
+          data: { text: answerTitle, is_right: false },
+        })
+      );
+    }
     setAnswerTitle('');
   }, [dispatch, question, answerTitle]);
+
+  const handleKeyCreateAnswer = React.useCallback(
+    event => {
+      if (event.keyCode === 13) {
+        handleAnswerCreate();
+      }
+    },
+    [handleAnswerCreate]
+  );
 
   const handleToggleModal = React.useCallback(() => setShowModal(!showModal), [
     showModal,
@@ -138,10 +149,11 @@ const Question = props => {
 
   const handleEditQuestion = React.useCallback(() => {
     setEditMode(!editMode);
-    if (!checkValid(question, questions, answers)) {
-      setShowMessage(true);
+    const message = checkValid(question, questions, answers);
+    if (message !== null) {
+      setShowMessage({ show: true, message });
     } else {
-      setShowMessage(false);
+      setShowMessage({ show: false, message: null });
     }
   }, [editMode, question, answers, questions]);
 
@@ -191,7 +203,7 @@ const Question = props => {
         ref={ref}
         style={{
           boxShadow: `${
-            showMessage ? '0 0 10px tomato' : '0 0 10px rgba(0, 0, 0, 0.1)'
+            showMessage.show ? '0 0 10px tomato' : '0 0 10px rgba(0, 0, 0, 0.1)'
           }`,
         }}
       >
@@ -206,9 +218,7 @@ const Question = props => {
               autoFocus
             />
           ) : (
-            <span onDoubleClick={handleEditQuestionTitle}>
-              {questions[question].title}
-            </span>
+            <span onDoubleClick={handleEditQuestionTitle}>{questionTitle}</span>
           )}
           <span className={style.type}>
             {questions[question].question_type}
@@ -234,6 +244,7 @@ const Question = props => {
                 value={answerTitle}
                 onChange={handleAnswerChangeInput}
                 placeholder="answer"
+                onKeyDown={handleKeyCreateAnswer}
               />
               <button
                 className={style.create_button}
@@ -244,10 +255,8 @@ const Question = props => {
             </div>
           )}
         </div>
-        {showMessage && questions[question].answers.length > 0 && (
-          <div className={style.error}>
-            This question won`t appear during the test
-          </div>
+        {showMessage.show && questions[question].answers.length > 0 && (
+          <div className={style.error}>{showMessage.message}</div>
         )}
       </div>
       {showModal && (

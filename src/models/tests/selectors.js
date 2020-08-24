@@ -1,21 +1,20 @@
 import { createSelector } from 'reselect';
 
-export const infoSelector = createSelector(
-  state => state.tests.info,
-  info => info
-);
-
-export const testsSelector = createSelector(
-  state => state.tests.tests,
+export const testsSlector = createSelector(
+  state => state.tests,
   tests => tests
 );
 
+export const infoSelector = createSelector(testsSlector, ({ info }) => info);
+
+export const testsSelector = createSelector(testsSlector, ({ tests }) => tests);
+
 export const loadingSelector = createSelector(
-  state => state.tests.loading,
-  loading => loading
+  testsSlector,
+  ({ preLoading }) => preLoading
 );
 
 export const testsByIdSelector = createSelector(
-  state => state.tests.testsById,
-  byId => byId
+  testsSlector,
+  ({ testsById }) => testsById
 );

@@ -1,10 +1,6 @@
 import React, { Fragment } from 'react';
 import Navbar from 'components/Navbar';
-import {
-  checkCurrentUser,
-  setInitialLoading,
-  logoutUser,
-} from 'models/authentication/slice';
+import { setInitialLoading, logoutUser } from 'models/authentication/slice';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { infoSelector, testsByIdSelector } from 'models/tests/selectors';
@@ -15,12 +11,15 @@ import {
   isAdminSelector,
 } from 'models/authentication/selectors';
 import loader from 'images/loader.gif';
+import loaderCreate from 'images/loader2.gif';
 import style from './Home.scss';
 import TestList from './TestList';
 import { getTests, changeSearchField, createTest } from 'models/tests/slice';
 import Modal from 'components/Modal';
 import Pagination from 'components/Pagination';
 import { useDebounce } from 'hooks/useDebounce';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const Home = () => {
   const info = useSelector(infoSelector);
   const history = useHistory();
   const [openModal, setOpenModal] = React.useState(false);
-  const [text, setText] = React.useState('');
   const infoDebounce = useDebounce(info, 400);
   const isAdmin = useSelector(isAdminSelector);
   const testsById = useSelector(testsByIdSelector);
@@ -54,12 +52,10 @@ const Home = () => {
   }, [dispatch, login, infoDebounce]);
 
   React.useEffect(() => {
-    if (!login && initialLoading) {
-      dispatch(checkCurrentUser());
-    } else {
+    if (login) {
       dispatch(setInitialLoading({ value: false }));
     }
-  }, [dispatch, login, initialLoading]);
+  }, [dispatch, login]);
 
   React.useEffect(() => {
     if (!login && !initialLoading) {
@@ -81,16 +77,11 @@ const Home = () => {
     [dispatch, history]
   );
 
-  const handleCreateTest = React.useCallback(() => {
-    if (text !== '') {
-      dispatch(createTest({ title: text }));
-      handleToggleModal();
-    }
-  }, [dispatch, text, handleToggleModal]);
-
-  const handleCreateTestInput = React.useCallback(
-    event => setText(event.target.value),
-    []
+  const handleCreateTest = React.useCallback(
+    values => {
+      dispatch(createTest({ title: values.title }));
+    },
+    [dispatch]
   );
 
   return (
@@ -115,6 +106,7 @@ const Home = () => {
                 className={style.search}
                 type="text"
                 placeholder="Search"
+                value={info.search || ''}
               />
             </div>
             <div className={style.header_buttons}>
@@ -136,28 +128,56 @@ const Home = () => {
           )}
           {openModal && (
             <Modal close={handleToggleModal}>
-              <div className={style.modal_title}>Chose test name</div>
-              <input
-                className={style.modal_input}
-                onChange={handleCreateTestInput}
-                value={text}
-                type="text"
-                placeholder="enter test name"
-              />
-              <div className={style.buttons}>
-                <button
-                  className={style.modal_accept}
-                  onClick={handleCreateTest}
-                >
-                  Create
-                </button>
-                <button
-                  className={style.modal_cancel}
-                  onClick={handleToggleModal}
-                >
-                  Cancel
-                </button>
-              </div>
+              <Formik
+                initialValues={{
+                  title: '',
+                }}
+                validationSchema={Yup.object().shape({
+                  title: Yup.string().required(),
+                })}
+                onSubmit={handleCreateTest}
+              >
+                {({ isSubmitting }) => (
+                  <div className={style.form_wrapper}>
+                    {isSubmitting && (
+                      <img
+                        className={style.create_loader}
+                        src={loaderCreate}
+                        alt="loading"
+                      />
+                    )}
+                    <Form style={{ opacity: isSubmitting && '30%' }}>
+                      <div className={style.modal_title}>Chose test name</div>
+                      <Field
+                        className={style.modal_input}
+                        name="title"
+                        type="text"
+                        placeholder="enter test name"
+                      />
+                      <div className={style.buttons}>
+                        <button
+                          type="submit"
+                          className={style.modal_accept}
+                          disabled={isSubmitting}
+                        >
+                          Create
+                        </button>
+                        <button
+                          className={style.modal_cancel}
+                          onClick={handleToggleModal}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      <ErrorMessage
+                        className={style.title_error}
+                        name="title"
+                        component="div"
+                      />
+                    </Form>
+                  </div>
+                )}
+              </Formik>
             </Modal>
           )}
         </Fragment>

@@ -45,7 +45,8 @@ const Register = () => {
         <div className={style.error}>
           {(error.username && error.username[0]) ||
             (error.password && error.password[0]) ||
-            (error.password_confirmation && error.password_confirmation[0])}
+            (error.password_confirmation && error.password_confirmation[0]) ||
+            error.error}
           <button onClick={handleCloseError}>X</button>
         </div>
       )}

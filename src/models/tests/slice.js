@@ -26,6 +26,7 @@ const testsSlice = createSlice({
       sort: 'created_at_desc',
     },
     loading: false,
+    preLoading: true,
     errorMessage: null,
     meta: {
       total_pages: 0,
@@ -40,16 +41,16 @@ const testsSlice = createSlice({
       state.info.page = payload.page;
     },
     getTests(state) {
-      state.loading = true;
+      state.preLoading = true;
     },
     getTestsSuccess(state, { payload }) {
-      state.loading = false;
+      state.preLoading = false;
       state.tests = payload.tests;
       state.meta = payload.meta;
       state.testsById = payload.testsById;
     },
     getTestsFailed(state, { payload }) {
-      state.loading = false;
+      state.preLoading = false;
       state.errorMessage = payload.err;
     },
     createTest(state) {
