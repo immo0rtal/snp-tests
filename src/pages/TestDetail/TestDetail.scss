@@ -197,3 +197,23 @@
   border-radius: 6px;
   border: 1px solid $color-lightgray;
 }
+
+.question_error {
+  position: absolute;
+  color: red;
+  top: 10px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.loader {
+  margin: 5% auto;
+  max-width: 200px;
+}
+
+.questions_loader {
+  position: absolute;
+  max-width: 200px;
+  max-height: 90px;
+  top: -30px;
+}

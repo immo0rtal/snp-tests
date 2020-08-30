@@ -6,7 +6,7 @@ import testsReducer from './tests/slice';
 import questionsReducer from './questions/slice';
 import answersReducer from './answers/slice';
 
-import authSagas from './authentication/sagas';
+import authSagas, { checkCurrentUserEffect } from './authentication/sagas';
 import testsSagas from './tests/sagas';
 import questionsSagas from './questions/sagas';
 import answersSagas from './answers/sagas';
@@ -20,5 +20,11 @@ export const createRootReducer = history => ({
 });
 
 export const rootSaga = function* rootSaga() {
-  yield all([authSagas(), testsSagas(), questionsSagas(), answersSagas()]);
+  yield all([
+    checkCurrentUserEffect(),
+    authSagas(),
+    testsSagas(),
+    questionsSagas(),
+    answersSagas(),
+  ]);
 };

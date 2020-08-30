@@ -24,14 +24,14 @@ export default [
     exact: true,
     cache: false,
     component: TestDetail,
-    title: 'TestDetail',
+    title: 'Edit Test',
   },
   {
     path: '/passing-test/:id',
     exact: true,
     cache: false,
     component: PassingTest,
-    title: 'PassingTest',
+    title: 'Passing Test',
   },
   {
     path: '/auth/register',

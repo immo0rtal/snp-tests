@@ -3,10 +3,12 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import style from './Modal.scss';
 import closeIcon from 'images/close.jpg';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 const Modal = props => {
   const { close, children, disable } = props;
   const ref = React.useRef(null);
+  const body = document.querySelector('body');
 
   React.useEffect(() => {
     const handleKeyDown = event => {
@@ -21,15 +23,15 @@ const Modal = props => {
       }
     };
 
-    document.body.style.overflow = 'hidden';
+    disableBodyScroll(body);
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'unset';
+      enableBodyScroll(body);
     };
-  }, [close, ref, disable]);
+  }, [close, ref, disable, body]);
 
   return createPortal(
     <div className={style.wrapper}>

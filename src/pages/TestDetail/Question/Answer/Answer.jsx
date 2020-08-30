@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import style from './Answer.scss';
 import Checkbox from 'components/Checkbox';
-import close from 'images/close.jpg';
+import deleteImg from 'images/delete.png';
 import { deleteAnswer, changeAnswer } from 'models/answers/slice';
 import { useDrop, useDrag } from 'react-dnd';
 import { answersSelector } from 'models/answers/selectors';
@@ -128,12 +128,12 @@ const Answer = props => {
             autoFocus
           />
         ) : (
-          answers[answer].text
+          answerTitle
         )}
       </span>
       {!active && (
         <button className={style.close} onClick={handleDeleteAnswer}>
-          <img className={style.close_img} src={close} alt="" />
+          <img className={style.close_img} src={deleteImg} alt="delete" />
         </button>
       )}
     </div>

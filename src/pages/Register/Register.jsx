@@ -9,8 +9,10 @@ import arrow from 'images/arrow.jpg';
 import { useHistory } from 'react-router-dom';
 import { loginSelector } from 'models/authentication/selectors';
 import Checkbox from 'components/Checkbox';
+import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
-const Register = () => {
+const Register = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   const error = useSelector(state => state.auth.registerError);
@@ -33,6 +35,9 @@ const Register = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{props.title}</title>
+      </Helmet>
       <Navbar>
         <div className={style.wrapper}>
           <button onClick={handleGoBack}>
@@ -45,7 +50,8 @@ const Register = () => {
         <div className={style.error}>
           {(error.username && error.username[0]) ||
             (error.password && error.password[0]) ||
-            (error.password_confirmation && error.password_confirmation[0])}
+            (error.password_confirmation && error.password_confirmation[0]) ||
+            error.error}
           <button onClick={handleCloseError}>X</button>
         </div>
       )}
@@ -108,6 +114,14 @@ const Register = () => {
       </Formik>
     </>
   );
+};
+
+Register.propTypes = {
+  title: PropTypes.string,
+};
+
+Register.defaultProps = {
+  title: 'React App',
 };
 
 export default React.memo(Register);
