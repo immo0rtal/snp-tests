@@ -151,7 +151,7 @@
   ],
   "dependencies": {
     "@babel/register": "^7.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-scroll-lock": "^3.0.3",
     "bowser": "^2.1.2",
     "chalk": "^2.4.1",
